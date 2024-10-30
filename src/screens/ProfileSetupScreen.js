@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import BackButton from '../components/BackButton';
+import CustomInput from '../components/CustomInput';
 
 export default function ProfileSetupScreen({ navigation }) {
+  const [name, setName] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [nameFocused, setNameFocused] = useState(false);
   const [birthdayFocused, setBirthdayFocused] = useState(false);
   const [emailFocused, setEmailFocused] = useState(false);
@@ -38,71 +43,46 @@ export default function ProfileSetupScreen({ navigation }) {
         </View>
       </View>
 
-      {/* Form Fields */}
-      <View style={[styles.inputContainer, nameFocused && styles.inputContainerFocused]}>
-        <Ionicons 
-          name="person-outline" 
-          size={20} 
-          color={nameFocused ? '#007BFF' : '#999'} 
-          style={styles.icon}
-        />
-        <TextInput
-          style={[styles.input, { outline: 'none' }]}
-          placeholder="Họ và tên"
-          onFocus={() => setNameFocused(true)}
-          onBlur={() => setNameFocused(false)}
-          placeholderTextColor="#999"
-        />
-      </View>
+      <CustomInput
+        placeholder="Họ và tên"
+        iconName="person-outline"
+        value={name}
+        onChangeText={setName}
+        isFocused={nameFocused}
+        onFocus={() => setNameFocused(true)}
+        onBlur={() => setNameFocused(false)}
+      />
 
-      <View style={[styles.inputContainer, birthdayFocused && styles.inputContainerFocused]}>
-        <Ionicons 
-          name="calendar-outline" 
-          size={20} 
-          color={birthdayFocused ? '#007BFF' : '#999'} 
-          style={styles.icon}
-        />
-        <TextInput
-          style={[styles.input, { outline: 'none' }]}
-          placeholder="Ngày/tháng/năm sinh"
-          onFocus={() => setBirthdayFocused(true)}
-          onBlur={() => setBirthdayFocused(false)}
-          placeholderTextColor="#999"
-        />
-      </View>
+      <CustomInput
+        placeholder="Ngày/tháng/năm sinh"
+        iconName="calendar-outline"
+        value={birthday}
+        onChangeText={setBirthday}
+        isFocused={birthdayFocused}
+        onFocus={() => setBirthdayFocused(true)}
+        onBlur={() => setBirthdayFocused(false)}
+      />
 
-      <View style={[styles.inputContainer, emailFocused && styles.inputContainerFocused]}>
-        <Ionicons 
-          name="mail-outline" 
-          size={20} 
-          color={emailFocused ? '#007BFF' : '#999'} 
-          style={styles.icon}
-        />
-        <TextInput
-          style={[styles.input, { outline: 'none' }]}
-          placeholder="Email"
-          onFocus={() => setEmailFocused(true)}
-          onBlur={() => setEmailFocused(false)}
-          placeholderTextColor="#999"
-        />
-      </View>
+      <CustomInput
+        placeholder="Email"
+        iconName="mail-outline"
+        value={email}
+        onChangeText={setEmail}
+        isFocused={emailFocused}
+        onFocus={() => setEmailFocused(true)}
+        onBlur={() => setEmailFocused(false)}
+      />
 
-      <View style={[styles.inputContainer, phoneFocused && styles.inputContainerFocused]}>
-        <Ionicons 
-          name="call-outline" 
-          size={20} 
-          color={phoneFocused ? '#007BFF' : '#999'} 
-          style={styles.icon}
-        />
-        <TextInput
-          style={[styles.input, { outline: 'none' }]}
-          placeholder="Số điện thoại"
-          onFocus={() => setPhoneFocused(true)}
-          onBlur={() => setPhoneFocused(false)}
-          placeholderTextColor="#999"
-          keyboardType="phone-pad"
-        />
-      </View>
+      <CustomInput
+        placeholder="Số điện thoại"
+        iconName="call-outline"
+        value={phone}
+        onChangeText={setPhone}
+        isFocused={phoneFocused}
+        onFocus={() => setPhoneFocused(true)}
+        onBlur={() => setPhoneFocused(false)}
+        keyboardType="phone-pad"
+      />
 
       <View style={[styles.inputContainer, genderFocused && styles.inputContainerFocused]}>
         <Ionicons 
@@ -220,44 +200,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#ddd',
-    borderRadius: 15,
-    marginBottom: 15,
-    backgroundColor: '#fff',
-    height: 45,
-    width: '100%',
-  },
-  inputContainerFocused: {
-    borderColor: '#007BFF',
-    borderWidth: 2.5,
-  },
-  icon: {
-    paddingLeft: 15,
-  },
-  input: {
-    flex: 1,
-    height: '100%',
-    paddingHorizontal: 10,
-    color: '#333',
-    outlineStyle: 'none',
-    fontFamily: 'Inter-SemiBold',
-  },
+  
   pickerWrapper: {
     flex: 1,
     marginLeft: 10,
     overflow: 'hidden',
   },
   picker: {
-    height: 45,
+    height: 52,
     width: '100%',
     backgroundColor: 'transparent',
     border: 'none',
     outlineWidth: 0,
     outlineStyle: 'none',
+    fontSize: 16,
     fontFamily: 'Inter-SemiBold',
   },
   pickerItem: {

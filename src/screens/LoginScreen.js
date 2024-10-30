@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import { AuthContext } from '../App';
 import { Ionicons } from '@expo/vector-icons';
 import BackButton from '../components/BackButton';
+import CustomInput from '../components/CustomInput';
+
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -28,49 +30,28 @@ export default function LoginScreen({ navigation }) {
       />
       <Text style={styles.title}>Đăng nhập</Text>
       
-      <View style={[styles.inputContainer, usernameFocused && styles.inputContainerFocused]}>
-        <Ionicons 
-          name="person-outline" 
-          size={20} 
-          color={usernameFocused ? '#007BFF' : '#999'} 
-          style={styles.icon}
-        />
-        <TextInput
-          style={[styles.input, { outline: 'none' }]}
-          placeholder="Tên đăng nhập"
-          value={username}
-          onChangeText={setUsername}
-          onFocus={() => setUsernameFocused(true)}
-          onBlur={() => setUsernameFocused(false)}
-          placeholderTextColor="#999"
-        />
-      </View>
+      <CustomInput
+        placeholder="Tên đăng nhập"
+        iconName="person-outline"
+        value={username}
+        onChangeText={setUsername}
+        isFocused={usernameFocused}
+        onFocus={() => setUsernameFocused(true)}
+        onBlur={() => setUsernameFocused(false)}
+      />
       
-      <View style={[styles.inputContainer, passwordFocused && styles.inputContainerFocused]}>
-        <Ionicons 
-          name="lock-closed-outline" 
-          size={20} 
-          color={passwordFocused ? '#007BFF' : '#999'} 
-          style={styles.icon}
-        />
-        <TextInput
-          style={[styles.input, { outline: 'none' }]}
-          placeholder="Mật khẩu"
-          value={password}
-          onChangeText={setPassword}
-          onFocus={() => setPasswordFocused(true)}
-          onBlur={() => setPasswordFocused(false)}
-          secureTextEntry={!showPassword}
-          placeholderTextColor="#999"
-        />
-        <Ionicons 
-          name={showPassword ? "eye-outline" : "eye-off-outline"}
-          size={20} 
-          color="#999"
-          onPress={() => setShowPassword(!showPassword)}
-          style={styles.eyeIcon}
-        />
-      </View>
+      <CustomInput
+        placeholder="Mật khẩu"
+        iconName="lock-closed-outline"
+        value={password}
+        onChangeText={setPassword}
+        isFocused={passwordFocused}
+        onFocus={() => setPasswordFocused(true)}
+        onBlur={() => setPasswordFocused(false)}
+        secureTextEntry={!showPassword}
+        rightIcon={showPassword ? "eye-outline" : "eye-off-outline"}
+        onRightIconPress={() => setShowPassword(!showPassword)}
+      />
       
       <TouchableOpacity style={styles.forgotPasswordContainer}>
         <Text style={styles.forgotPasswordText}>Quên mật khẩu?</Text>
@@ -144,35 +125,7 @@ const styles = StyleSheet.create({
     color: '#007BFF',
     marginBottom: 30,
   },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#ddd',
-    borderRadius: 15,
-    marginBottom: 15,
-    backgroundColor: '#fff',
-    height: 45,
-    width: '100%',
-  },
-  inputContainerFocused: {
-    borderColor: '#007BFF',
-    borderWidth: 2.5,
-  },
-  icon: {
-    paddingLeft: 15,
-  },
-  input: {
-    flex: 1,
-    height: '100%',
-    paddingHorizontal: 10,
-    color: '#333',
-    outlineStyle: 'none',
-    fontFamily: 'Inter-Medium',
-  },
-  eyeIcon: {
-    paddingRight: 15,
-  },
+
   loginButton: {
     width: '100%',
     height: 50,

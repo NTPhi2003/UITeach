@@ -9,7 +9,7 @@ export default function IntroductionScreen() {
       <HeaderBeforeLogin />
       <ScrollView style={styles.content}>
         {/* First Content */}
-        <ImageBackground source={require('../../assets/background_in_space.png')} resizeMode="cover" style={styles.image}>
+        <ImageBackground source={require('../../assets/background_in_space_2.png')} resizeMode="cover" style={styles.backgroundImage}>
         <View style={styles.firstContent}>
             
             
@@ -27,22 +27,38 @@ export default function IntroductionScreen() {
             </View>
 
             <View style={styles.tagsContainer}>
-            <Text style={styles.tagActive}>Giới thiệu</Text>
-            <Text style={styles.tag}>Thành tựu cương</Text>
-            <Text style={styles.tag}>Blog</Text>
+              <Text style={styles.tagActive}>Giới thiệu</Text>
+              <Text style={styles.tag}>Toán đại cương</Text>
+              <Text style={styles.tag}>Blogs</Text>
+              <Text style={styles.tag}>Đề thi các môn</Text>
+              <Text style={styles.tag}>Lập trình cơ bản</Text>
             </View>
 
-            
-            <Image 
-                source={require('../../assets/animalBox.png')} 
-                style={styles.animalImage}
+            <View style={styles.animalImgContainer}>
+              <Image 
+                  source={require('../../assets/Ellipse.png')} 
+                  style={styles.ellipseImage}
+                  resizeMode="contain"
+              />
+              
+              <Image 
+                  source={require('../../assets/animalBox.png')} 
+                  style={styles.animalImage}
+                  resizeMode="contain"
+              />
+
+              <Image 
+                source={require('../../assets/Polygon.png')} 
+                style={styles.polygonImage}
                 resizeMode="contain"
-            />
+              />
+            </View>
             </View>
         </ImageBackground>
 
         {/* Second Content */}
         <View style={styles.secondContent}>
+            
             <Image 
                 source={require('../../assets/StudyPic.png')} 
                 style={styles.studyImage}
@@ -50,7 +66,7 @@ export default function IntroductionScreen() {
             />
             <Text style={styles.sectionTitle}>Giới thiệu đôi nét về UITeach</Text>
             <Text style={styles.description}>
-            UITeach là một ứng dụng học tập được thiết kế với mục đích nhằm hỗ trợ các bạn sinh viên trong việc nâng cao kiến thức thông qua các video chất lượng cao. Được thành lập bởi các sinh viên UIT, UITeach mong muốn mang đến cho sinh viên một trải nghiệm học tập tuyệt vời và không ngừng cải thiện để trở thành một nền tảng học tập chuyên nghiệp cũng như một cách tự tin và thành công.
+            UITeach là ứng dụng học tập dành với mục đích nhằm hỗ trợ các bạn sinh viên trong việc nắm vững kiến thức về IT và các môn đại cương liên quan thông qua các video chất lượng cao. Được thành lập bởi 4 sinh viên ĐH CNTT, UITeach cam kết mang đến cho học sinh một trải nghiệm học tập thú vị, hiệu quả và tương tác, giúp họ phát triển kỹ năng IT và nền tảng đại cương một cách tự tin và thành công.
             </Text>
         </View>
     </ScrollView>
@@ -90,40 +106,55 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
-    borderRadius: 18,
-    paddingHorizontal: 12,
+    borderRadius: 25,
+    paddingRight: 16,
+    paddingLeft: 24,
     marginBottom: 20,
-    height: 48,
-    width: '90%',
+    height: 52,
+    width: '95%',
     alignSelf: 'center',
+    
   },
   searchInput: {
     flex: 1,
     fontSize: 16,
     color: '#333',
     height: '100%',
+    fontFamily: 'SourceSans3-Bold',
   },
   searchIcon: {
-    
     padding: 8,
   },
   tagsContainer: {
     flexDirection: 'row',
-    marginBottom: 24,
+    flexWrap: 'wrap',
+    marginHorizontal: 10,
+    marginTop: 20,
+    marginBottom: 30,
+    gap: 10,
+    justifyContent: 'center'
   },
   tag: {
-    color: '#666',
+    color: '#6F6F6F',
     fontSize: 16,
-    marginRight: 24,
-    paddingVertical: 8,
+    // marginRight: 24,
+    padding: 8,
+    borderWidth: 1.5,
+    borderColor: "#6F6F6F",
+    borderRadius: 18,
+    fontFamily: 'SourceSans3-Bold',
   },
   tagActive: {
-    color: '#007BFF',
+    color: '#ffffff',
     fontSize: 16,
-    marginRight: 24,
-    paddingVertical: 8,
-    borderBottomWidth: 2,
-    borderBottomColor: '#007BFF',
+    // marginRight: 18,
+    padding: 8,
+    borderWidth: 1.5,
+    borderRadius: 18,
+    borderColor: '#007BFF',
+    fontFamily: 'SourceSans3-Bold',
+    backgroundColor: '#007BFF',
+    overflow: 'hidden',
   },
   illustrationContainer: {
     width: '100%',
@@ -161,11 +192,26 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginBottom: 24,
   },
+  animalImgContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 25,
+  },  
   firstContent: {
     paddingHorizontal: 16,
+    flex: 1,
   },
+  backgroundImage: {
+    width: '100%',
+    minHeight: 600,
+  },
+
   secondContent: {
     paddingHorizontal: 16,
-  }
+    backgroundColor: '#fff',
+    flex: 1,
+  },
 });
 

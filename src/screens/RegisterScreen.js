@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import BackButton from '../components/BackButton';
+import CustomInput from '../components/CustomInput';
 
 export default function RegisterScreen({ navigation }) {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [usernameFocused, setUsernameFocused] = useState(false);
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
@@ -20,85 +25,51 @@ export default function RegisterScreen({ navigation }) {
       />
       <Text style={styles.title}>Đăng ký</Text>
       
-      <View style={[styles.inputContainer, usernameFocused && styles.inputContainerFocused]}>
-        <Ionicons 
-          name="person-outline" 
-          size={20} 
-          color={usernameFocused ? '#007BFF' : '#999'} 
-          style={styles.icon}
-        />
-        <TextInput
-          style={[styles.input, { outline: 'none' }]}
-          placeholder="Tên đăng nhập"
-          onFocus={() => setUsernameFocused(true)}
-          onBlur={() => setUsernameFocused(false)}
-          placeholderTextColor="#999"
-        />
-      </View>
+      <CustomInput
+        placeholder="Tên đăng nhập"
+        iconName="person-outline"
+        value={username}
+        onChangeText={setUsername}
+        isFocused={usernameFocused}
+        onFocus={() => setUsernameFocused(true)}
+        onBlur={() => setUsernameFocused(false)}
+      />
 
-      <View style={[styles.inputContainer, emailFocused && styles.inputContainerFocused]}>
-        <Ionicons 
-          name="mail-outline" 
-          size={20} 
-          color={emailFocused ? '#007BFF' : '#999'} 
-          style={styles.icon}
-        />
-        <TextInput
-          style={[styles.input, { outline: 'none' }]}
-          placeholder="Email"
-          onFocus={() => setEmailFocused(true)}
-          onBlur={() => setEmailFocused(false)}
-          placeholderTextColor="#999"
-        />
-      </View>
-      
-      <View style={[styles.inputContainer, passwordFocused && styles.inputContainerFocused]}>
-        <Ionicons 
-          name="lock-closed-outline" 
-          size={20} 
-          color={passwordFocused ? '#007BFF' : '#999'} 
-          style={styles.icon}
-        />
-        <TextInput
-          style={[styles.input, { outline: 'none' }]}
-          placeholder="Mật khẩu"
-          secureTextEntry={!showPassword}
-          onFocus={() => setPasswordFocused(true)}
-          onBlur={() => setPasswordFocused(false)}
-          placeholderTextColor="#999"
-        />
-        <Ionicons 
-          name={showPassword ? "eye-outline" : "eye-off-outline"}
-          size={20} 
-          color="#999"
-          onPress={() => setShowPassword(!showPassword)}
-          style={styles.eyeIcon}
-        />
-      </View>
+      <CustomInput
+        placeholder="Email"
+        iconName="mail-outline"
+        value={email}
+        onChangeText={setEmail}
+        isFocused={emailFocused}
+        onFocus={() => setEmailFocused(true)}
+        onBlur={() => setEmailFocused(false)}
+      />
 
-      <View style={[styles.inputContainer, confirmPasswordFocused && styles.inputContainerFocused]}>
-        <Ionicons 
-          name="lock-closed-outline" 
-          size={20} 
-          color={confirmPasswordFocused ? '#007BFF' : '#999'} 
-          style={styles.icon}
-        />
-        <TextInput
-          style={[styles.input, { outline: 'none' }]}
-          placeholder="Nhập lại mật khẩu"
-          secureTextEntry={!showConfirmPassword}
-          onFocus={() => setConfirmPasswordFocused(true)}
-          onBlur={() => setConfirmPasswordFocused(false)}
-          placeholderTextColor="#999"
-        />
-        <Ionicons 
-          name={showConfirmPassword ? "eye-outline" : "eye-off-outline"}
-          size={20} 
-          color="#999"
-          onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-          style={styles.eyeIcon}
-        />
-      </View>
+      <CustomInput
+        placeholder="Mật khẩu"
+        iconName="lock-closed-outline"
+        value={password}
+        onChangeText={setPassword}
+        isFocused={passwordFocused}
+        onFocus={() => setPasswordFocused(true)}
+        onBlur={() => setPasswordFocused(false)}
+        secureTextEntry={!showPassword}
+        rightIcon={showPassword ? "eye-outline" : "eye-off-outline"}
+        onRightIconPress={() => setShowPassword(!showPassword)}
+      />
+
+      <CustomInput
+        placeholder="Nhập lại mật khẩu"
+        iconName="lock-closed-outline"
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+        isFocused={confirmPasswordFocused}
+        onFocus={() => setConfirmPasswordFocused(true)}
+        onBlur={() => setConfirmPasswordFocused(false)}
+        secureTextEntry={!showConfirmPassword}
+        rightIcon={showConfirmPassword ? "eye-outline" : "eye-off-outline"}
+        onRightIconPress={() => setShowConfirmPassword(!showConfirmPassword)}
+      />
       
       <TouchableOpacity 
         style={styles.registerButton}
@@ -153,35 +124,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#007BFF',
     marginBottom: 30,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#ddd',
-    borderRadius: 15,
-    marginBottom: 15,
-    backgroundColor: '#fff',
-    height: 45,
-    width: '100%',
-  },
-  inputContainerFocused: {
-    borderColor: '#007BFF',
-    borderWidth: 2.5,
-  },
-  icon: {
-    paddingLeft: 15,
-  },
-  input: {
-    flex: 1,
-    height: '100%',
-    paddingHorizontal: 10,
-    color: '#333',
-    outlineStyle: 'none',
-    fontFamily: 'Inter-Medium',
-  },
-  eyeIcon: {
-    paddingRight: 15,
   },
   registerButton: {
     width: '100%',
