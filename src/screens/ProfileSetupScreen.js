@@ -28,7 +28,7 @@ export default function ProfileSetupScreen({ navigation }) {
 
       <Text style={styles.title}>Thông tin cá nhân</Text>
 
-      {/* Avatar Section */}
+      {/* Avatar Section  */}
       <View style={styles.avatarContainer}>
         <View style={styles.avatar}>
           <Ionicons name="person-outline" size={40} color="#999" />

@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import { AuthContext } from '../App';
 import { Ionicons } from '@expo/vector-icons';
-
+import BackButton from '../components/BackButton';
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -21,6 +21,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <BackButton />
       <Image 
         source={require('../../assets/UITeach_Logo.png')} 
         style={styles.logo}

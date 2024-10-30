@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import BackButton from '../components/BackButton';
 
 export default function RegisterScreen({ navigation }) {
   const [usernameFocused, setUsernameFocused] = useState(false);
@@ -12,6 +13,7 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <BackButton />
       <Image 
         source={require('../../assets/UITeach_Logo.png')} 
         style={styles.logo}
