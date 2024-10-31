@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function CustomInput({
@@ -16,36 +16,34 @@ export default function CustomInput({
   keyboardType
 }) {
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={[styles.inputContainer, isFocused && styles.inputContainerFocused]}>
+    <View style={[styles.inputContainer, isFocused && styles.inputContainerFocused]}>
+      <Ionicons 
+        name={iconName} 
+        size={20} 
+        color={isFocused ? '#007BFF' : '#999'} 
+        style={styles.icon}
+      />
+      <TextInput
+        style={[styles.input, { outline: 'none' }]}
+        placeholder={placeholder}
+        value={value}
+        onChangeText={onChangeText}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        secureTextEntry={secureTextEntry}
+        placeholderTextColor="#999"
+        keyboardType={keyboardType}
+      />
+      {rightIcon && (
         <Ionicons 
-          name={iconName} 
+          name={rightIcon}
           size={20} 
-          color={isFocused ? '#007BFF' : '#999'} 
-          style={styles.icon}
+          color="#999"
+          onPress={onRightIconPress}
+          style={styles.rightIcon}
         />
-        <TextInput
-          style={[styles.input, { outline: 'none' }]}
-          placeholder={placeholder}
-          value={value}
-          onChangeText={onChangeText}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          secureTextEntry={secureTextEntry}
-          placeholderTextColor="#999"
-          keyboardType={keyboardType}
-        />
-        {rightIcon && (
-          <Ionicons 
-            name={rightIcon}
-            size={20} 
-            color="#999"
-            onPress={onRightIconPress}
-            style={styles.rightIcon}
-          />
-        )}
-      </View>
-    </TouchableWithoutFeedback>
+      )}
+    </View>
   );
 }
 

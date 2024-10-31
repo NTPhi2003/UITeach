@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Modal, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import BackButton from '../components/BackButton';
@@ -28,109 +28,115 @@ export default function ProfileSetupScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.mainContainer}>
       <BackButton />
-
-      <Text style={styles.title}>Thông tin cá nhân</Text>
-
-      {/* Avatar Section  */}
-      <View style={styles.avatarContainer}>
-        <View style={styles.avatar}>
-          <Ionicons name="person-outline" size={40} color="#999" />
-          <TouchableOpacity style={styles.editIcon}>
-            <Ionicons name="pencil" size={16} color="#fff" />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <CustomInput
-        placeholder="Họ và tên"
-        iconName="person-outline"
-        value={name}
-        onChangeText={setName}
-        isFocused={nameFocused}
-        onFocus={() => setNameFocused(true)}
-        onBlur={() => setNameFocused(false)}
-      />
-
-      <CustomInput
-        placeholder="Ngày/tháng/năm sinh"
-        iconName="calendar-outline"
-        value={birthday}
-        onChangeText={setBirthday}
-        isFocused={birthdayFocused}
-        onFocus={() => setBirthdayFocused(true)}
-        onBlur={() => setBirthdayFocused(false)}
-      />
-
-      <CustomInput
-        placeholder="Email"
-        iconName="mail-outline"
-        value={email}
-        onChangeText={setEmail}
-        isFocused={emailFocused}
-        onFocus={() => setEmailFocused(true)}
-        onBlur={() => setEmailFocused(false)}
-      />
-
-      <CustomInput
-        placeholder="Số điện thoại"
-        iconName="call-outline"
-        value={phone}
-        onChangeText={setPhone}
-        isFocused={phoneFocused}
-        onFocus={() => setPhoneFocused(true)}
-        onBlur={() => setPhoneFocused(false)}
-        keyboardType="phone-pad"
-      />
-
-      <View style={[styles.inputContainer, genderFocused && styles.inputContainerFocused]}>
-        <Ionicons 
-          name="transgender-outline" 
-          size={20} 
-          color={genderFocused ? '#007BFF' : '#999'} 
-          style={styles.icon}
-        />
-        <View style={styles.pickerWrapper}>
-          <Picker
-            selectedValue={gender}
-            onValueChange={(itemValue) => setGender(itemValue)}
-            style={[
-              styles.picker,
-              { outline: 'none', color: gender ? '#333' : '#999' }
-            ]}
-            dropdownIconColor="#999"
-          >
-            <Picker.Item 
-              label="Giới tính" 
-              value="" 
-              style={[styles.pickerItem, styles.placeholderItem]}
-            />
-            <Picker.Item 
-              label="Nam" 
-              value="male" 
-              style={styles.pickerItem}
-            />
-            <Picker.Item 
-              label="Nữ" 
-              value="female" 
-              style={styles.pickerItem}
-            />
-            <Picker.Item 
-              label="Khác" 
-              value="other" 
-              style={styles.pickerItem}
-            />
-          </Picker>
-        </View>
-      </View>
-
-      <TouchableOpacity 
-        style={styles.continueButton}
-        onPress={handleComplete}
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoidingView}
       >
-        <Text style={styles.buttonText}>Hoàn tất</Text>
-      </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <Text style={styles.title}>Thông tin cá nhân</Text>
+            {/* Avatar Section  */}
+            <View style={styles.avatarContainer}>
+              <View style={styles.avatar}>
+                <Ionicons name="person-outline" size={40} color="#999" />
+                <TouchableOpacity style={styles.editIcon}>
+                  <Ionicons name="pencil" size={16} color="#fff" />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <CustomInput
+              placeholder="Họ và tên"
+              iconName="person-outline"
+              value={name}
+              onChangeText={setName}
+              isFocused={nameFocused}
+              onFocus={() => setNameFocused(true)}
+              onBlur={() => setNameFocused(false)}
+            />
+
+            <CustomInput
+              placeholder="Ngày/tháng/năm sinh"
+              iconName="calendar-outline"
+              value={birthday}
+              onChangeText={setBirthday}
+              isFocused={birthdayFocused}
+              onFocus={() => setBirthdayFocused(true)}
+              onBlur={() => setBirthdayFocused(false)}
+            />
+
+            <CustomInput
+              placeholder="Email"
+              iconName="mail-outline"
+              value={email}
+              onChangeText={setEmail}
+              isFocused={emailFocused}
+              onFocus={() => setEmailFocused(true)}
+              onBlur={() => setEmailFocused(false)}
+            />
+
+            <CustomInput
+              placeholder="Số điện thoại"
+              iconName="call-outline"
+              value={phone}
+              onChangeText={setPhone}
+              isFocused={phoneFocused}
+              onFocus={() => setPhoneFocused(true)}
+              onBlur={() => setPhoneFocused(false)}
+              keyboardType="phone-pad"
+            />
+
+            <View style={[styles.inputContainer, genderFocused && styles.inputContainerFocused]}>
+              <Ionicons 
+                name="transgender-outline" 
+                size={20} 
+                color={genderFocused ? '#007BFF' : '#999'} 
+                style={styles.icon}
+              />
+              <View style={styles.pickerWrapper}>
+                <Picker
+                  selectedValue={gender}
+                  onValueChange={(itemValue) => setGender(itemValue)}
+                  onFocus={() => setGenderFocused(true)}
+                  onBlur={() => setGenderFocused(false)}
+                  style={styles.picker}
+                >
+                  <Picker.Item 
+                    label="Giới tính" 
+                    value="" 
+                    style={styles.placeholderItem}
+                    enabled={false}
+                  />
+                  <Picker.Item 
+                    label="Nam" 
+                    value="male" 
+                    style={styles.pickerItem}
+                  />
+                  <Picker.Item 
+                    label="Nữ" 
+                    value="female" 
+                    style={styles.pickerItem}
+                  />
+                  <Picker.Item 
+                    label="Khác" 
+                    value="other" 
+                    style={styles.pickerItem}
+                  />
+                </Picker>
+              </View>
+            </View>
+
+            <TouchableOpacity 
+              style={styles.continueButton}
+              onPress={handleComplete}
+            >
+              <Text style={styles.buttonText}>Hoàn tất</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
 
       {/* Success Modal */}
       <Modal
@@ -163,9 +169,15 @@ export default function ProfileSetupScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
     alignItems: 'center',
     padding: 20,
     width: '100%',
@@ -203,26 +215,25 @@ const styles = StyleSheet.create({
   
   pickerWrapper: {
     flex: 1,
-    marginLeft: 10,
-    overflow: 'hidden',
+    height: 52,
+    backgroundColor: 'transparent',
   },
   picker: {
+    flex: 1,
     height: 52,
-    width: '100%',
+    marginLeft: -10,
+    color: '#333',
     backgroundColor: 'transparent',
-    border: 'none',
-    outlineWidth: 0,
-    outlineStyle: 'none',
-    fontSize: 16,
-    fontFamily: 'Inter-SemiBold',
   },
   pickerItem: {
-    fontFamily: 'Inter-SemiBold',
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
     color: '#333',
   },
   placeholderItem: {
-    color: '#999',
+    fontSize: 16,
     fontFamily: 'Inter-Regular',
+    color: '#999',
   },
   continueButton: {
     width: '100%',
@@ -283,5 +294,40 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    height: 52,
+    borderRadius: 15,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#E8E8E8',
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 1,
+    elevation: 1,
+  },
+  inputContainerFocused: {
+    borderColor: '#007BFF',
+    backgroundColor: '#fff',
+    shadowColor: '#007BFF',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  icon: {
+    marginRight: 10,
   },
 });

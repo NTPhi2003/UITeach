@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import BackButton from '../components/BackButton';
 import CustomInput from '../components/CustomInput';
@@ -17,97 +17,112 @@ export default function RegisterScreen({ navigation }) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.mainContainer}>
       <BackButton />
-      <Image 
-        source={require('../../assets/UITeach_Logo.png')} 
-        style={styles.logo}
-      />
-      <Text style={styles.title}>Đăng ký</Text>
-      
-      <CustomInput
-        placeholder="Tên đăng nhập"
-        iconName="person-outline"
-        value={username}
-        onChangeText={setUsername}
-        isFocused={usernameFocused}
-        onFocus={() => setUsernameFocused(true)}
-        onBlur={() => setUsernameFocused(false)}
-      />
-
-      <CustomInput
-        placeholder="Email"
-        iconName="mail-outline"
-        value={email}
-        onChangeText={setEmail}
-        isFocused={emailFocused}
-        onFocus={() => setEmailFocused(true)}
-        onBlur={() => setEmailFocused(false)}
-      />
-
-      <CustomInput
-        placeholder="Mật khẩu"
-        iconName="lock-closed-outline"
-        value={password}
-        onChangeText={setPassword}
-        isFocused={passwordFocused}
-        onFocus={() => setPasswordFocused(true)}
-        onBlur={() => setPasswordFocused(false)}
-        secureTextEntry={!showPassword}
-        rightIcon={showPassword ? "eye-outline" : "eye-off-outline"}
-        onRightIconPress={() => setShowPassword(!showPassword)}
-      />
-
-      <CustomInput
-        placeholder="Nhập lại mật khẩu"
-        iconName="lock-closed-outline"
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        isFocused={confirmPasswordFocused}
-        onFocus={() => setConfirmPasswordFocused(true)}
-        onBlur={() => setConfirmPasswordFocused(false)}
-        secureTextEntry={!showConfirmPassword}
-        rightIcon={showConfirmPassword ? "eye-outline" : "eye-off-outline"}
-        onRightIconPress={() => setShowConfirmPassword(!showConfirmPassword)}
-      />
-      
-      <TouchableOpacity 
-        style={styles.registerButton}
-        onPress={() => navigation.navigate('ProfileSetup')}
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardAvoidingView}
       >
-        <Text style={styles.buttonText}>Tiếp tục</Text>
-      </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <Image 
+              source={require('../../assets/UITeach_Logo.png')} 
+              style={styles.logo}
+            />
+            <Text style={styles.title}>Đăng ký</Text>
+            
+            <CustomInput
+              placeholder="Tên đăng nhập"
+              iconName="person-outline"
+              value={username}
+              onChangeText={setUsername}
+              isFocused={usernameFocused}
+              onFocus={() => setUsernameFocused(true)}
+              onBlur={() => setUsernameFocused(false)}
+            />
 
-      <Text style={styles.orText}>Hoặc đăng nhập bằng</Text>
-      
-      <View style={styles.socialContainer}>
-        <TouchableOpacity>
-          <Image source={require('../../assets/gg_Logo.png')} style={styles.socialIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image source={require('../../assets/Facebook_Logo.png')} style={styles.socialIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image source={require('../../assets/X_Logo.png')} style={styles.socialIcon} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image source={require('../../assets/Linkedin_Logo.png')} style={styles.socialIcon} />
-        </TouchableOpacity>
-      </View>
+            <CustomInput
+              placeholder="Email"
+              iconName="mail-outline"
+              value={email}
+              onChangeText={setEmail}
+              isFocused={emailFocused}
+              onFocus={() => setEmailFocused(true)}
+              onBlur={() => setEmailFocused(false)}
+            />
 
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.loginText}>
-          Đã có tài khoản UITeach? <Text style={styles.linkText}>Đăng nhập</Text>
-        </Text>
-      </TouchableOpacity>
+            <CustomInput
+              placeholder="Mật khẩu"
+              iconName="lock-closed-outline"
+              value={password}
+              onChangeText={setPassword}
+              isFocused={passwordFocused}
+              onFocus={() => setPasswordFocused(true)}
+              onBlur={() => setPasswordFocused(false)}
+              secureTextEntry={!showPassword}
+              rightIcon={showPassword ? "eye-outline" : "eye-off-outline"}
+              onRightIconPress={() => setShowPassword(!showPassword)}
+            />
+
+            <CustomInput
+              placeholder="Nhập lại mật khẩu"
+              iconName="lock-closed-outline"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              isFocused={confirmPasswordFocused}
+              onFocus={() => setConfirmPasswordFocused(true)}
+              onBlur={() => setConfirmPasswordFocused(false)}
+              secureTextEntry={!showConfirmPassword}
+              rightIcon={showConfirmPassword ? "eye-outline" : "eye-off-outline"}
+              onRightIconPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            />
+            
+            <TouchableOpacity 
+              style={styles.registerButton}
+              onPress={() => navigation.navigate('ProfileSetup')}
+            >
+              <Text style={styles.buttonText}>Tiếp tục</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.orText}>Hoặc đăng nhập bằng</Text>
+            
+            <View style={styles.socialContainer}>
+              <TouchableOpacity>
+                <Image source={require('../../assets/gg_Logo.png')} style={styles.socialIcon} />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Image source={require('../../assets/Facebook_Logo.png')} style={styles.socialIcon} />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Image source={require('../../assets/X_Logo.png')} style={styles.socialIcon} />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Image source={require('../../assets/Linkedin_Logo.png')} style={styles.socialIcon} />
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.loginText}>
+                Đã có tài khoản UITeach? <Text style={styles.linkText}>Đăng nhập</Text>
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
     alignItems: 'center',
     padding: 20,
     justifyContent: 'center',
