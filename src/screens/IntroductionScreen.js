@@ -14,7 +14,7 @@ export default function IntroductionScreen() {
             
             
             
-            <Text style={styles.title}>Học Lập Trình</Text>
+            <Text style={styles.title} numberOfLines={1} adjustsFontSizeToFit>Học Lập Trình</Text>
             <Text style={styles.subtitle}>{`Cùng app học tập số 1 \ncho sinh viên UIT`}</Text>
             
             <View style={styles.searchContainer}>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 16,
   },
   title: {
-    fontSize: 48,
+    fontSize: 46,
     fontWeight: 'bold',
     color: '#ffffff',
     marginTop: 20,
@@ -92,9 +92,13 @@ const styles = StyleSheet.create({
     fontFamily: 'SourceSans3-Bold',
     alignSelf: 'center',
     paddingTop: 40,
+    textAlign: 'center',
+    width: '100%',
+    flexShrink: 1,
+    flexWrap: 'nowrap',
   },
   subtitle: {
-    fontSize: 26,
+    fontSize: 25,
     color: '#FFF4A3',
     marginBottom: 20,
     alignSelf: 'center',
@@ -117,7 +121,7 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 14,
     color: '#333',
     height: '100%',
     fontFamily: 'SourceSans3-Bold',
@@ -136,7 +140,7 @@ const styles = StyleSheet.create({
   },
   tag: {
     color: '#6F6F6F',
-    fontSize: 16,
+    fontSize: 13,
     // marginRight: 24,
     padding: 8,
     borderWidth: 1.5,
@@ -146,7 +150,7 @@ const styles = StyleSheet.create({
   },
   tagActive: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: 13,
     // marginRight: 18,
     padding: 8,
     borderWidth: 1.5,
@@ -185,12 +189,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
     marginBottom: 16,
+    alignSelf: 'center',
+    textAlign: 'center',
   },
   description: {
     fontSize: 16,
     color: '#666',
     lineHeight: 24,
     marginBottom: 24,
+    textAlign: 'center',
+    alignSelf: 'center',
   },
   animalImgContainer: {
     justifyContent: 'center',
@@ -209,6 +217,7 @@ const styles = StyleSheet.create({
   },
 
   secondContent: {
+    marginTop: 30,
     paddingHorizontal: 16,
     backgroundColor: '#fff',
     flex: 1,
