@@ -23,4 +23,4 @@ export default function useFonts() {
   }, []);
 
   return fontsLoaded;
-} 
+}
