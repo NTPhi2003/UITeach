@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: '100%',
-    height: 30,
+    height: 35,
     maxWidth: 120,
   },
   buttonContainer: {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   loginButton: {
-    paddingVertical: 6,
+    paddingVertical: 7,
     paddingHorizontal: 8,
     borderRadius: 15,
     borderWidth: 1.5,
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     minWidth: 70,
   },
   registerButton: {
-    paddingVertical: 6,
+    paddingVertical: 7,
     paddingHorizontal: 8,
     borderRadius: 15,
     backgroundColor: '#007BFF',

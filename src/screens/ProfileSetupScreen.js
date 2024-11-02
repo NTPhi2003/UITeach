@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Modal, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Picker } from '@react-native-picker/picker';
 import BackButton from '../components/BackButton';
 import CustomInput from '../components/CustomInput';
 
@@ -17,6 +16,7 @@ export default function ProfileSetupScreen({ navigation }) {
   const [gender, setGender] = useState('');
   const [genderFocused, setGenderFocused] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showGenderPicker, setShowGenderPicker] = useState(false);
 
   const handleComplete = () => {
     setShowSuccessModal(true);
@@ -25,6 +25,12 @@ export default function ProfileSetupScreen({ navigation }) {
   const handleLoginPress = () => {
     setShowSuccessModal(false);
     navigation.navigate('Login');
+  };
+
+  const handleGenderSelect = (value) => {
+    setGender(value);
+    setShowGenderPicker(false);
+    setGenderFocused(false);
   };
 
   return (
@@ -88,45 +94,24 @@ export default function ProfileSetupScreen({ navigation }) {
               keyboardType="phone-pad"
             />
 
-            <View style={[styles.inputContainer, genderFocused && styles.inputContainerFocused]}>
+            <TouchableOpacity 
+              style={[styles.inputContainer, genderFocused && styles.inputContainerFocused]}
+              onPress={() => setShowGenderPicker(true)}
+            >
               <Ionicons 
                 name="transgender-outline" 
                 size={20} 
                 color={genderFocused ? '#007BFF' : '#999'} 
                 style={styles.icon}
               />
-              <View style={styles.pickerWrapper}>
-                <Picker
-                  selectedValue={gender}
-                  onValueChange={(itemValue) => setGender(itemValue)}
-                  onFocus={() => setGenderFocused(true)}
-                  onBlur={() => setGenderFocused(false)}
-                  style={styles.picker}
-                >
-                  <Picker.Item 
-                    label="Giới tính" 
-                    value="" 
-                    style={styles.placeholderItem}
-                    enabled={false}
-                  />
-                  <Picker.Item 
-                    label="Nam" 
-                    value="male" 
-                    style={styles.pickerItem}
-                  />
-                  <Picker.Item 
-                    label="Nữ" 
-                    value="female" 
-                    style={styles.pickerItem}
-                  />
-                  <Picker.Item 
-                    label="Khác" 
-                    value="other" 
-                    style={styles.pickerItem}
-                  />
-                </Picker>
-              </View>
-            </View>
+              <Text style={[styles.pickerText, !gender && styles.placeholderText]}>
+                {gender ? (
+                  gender === 'male' ? 'Nam' : 
+                  gender === 'female' ? 'Nữ' : 
+                  'Khác'
+                ) : 'Giới tính'}
+              </Text>
+            </TouchableOpacity>
 
             <TouchableOpacity 
               style={styles.continueButton}
@@ -163,6 +148,40 @@ export default function ProfileSetupScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
+      </Modal>
+
+      {/* Gender Picker Modal */}
+      <Modal
+        transparent={true}
+        visible={showGenderPicker}
+        animationType="slide"
+      >
+        <TouchableWithoutFeedback onPress={() => setShowGenderPicker(false)}>
+          <View style={styles.modalOverlay}>
+            <TouchableWithoutFeedback>
+              <View style={styles.pickerModalContent}>
+                <TouchableOpacity 
+                  style={styles.genderOption}
+                  onPress={() => handleGenderSelect('male')}
+                >
+                  <Text style={styles.genderOptionText}>Nam</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.genderOption}
+                  onPress={() => handleGenderSelect('female')}
+                >
+                  <Text style={styles.genderOptionText}>Nữ</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                  style={styles.genderOption}
+                  onPress={() => handleGenderSelect('other')}
+                >
+                  <Text style={styles.genderOptionText}>Khác</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
       </Modal>
     </View>
   );
@@ -215,15 +234,15 @@ const styles = StyleSheet.create({
   
   pickerWrapper: {
     flex: 1,
-    height: 52,
-    backgroundColor: 'transparent',
+    // height: 52,
+    // backgroundColor: 'transparent',
+    // justifyContent: 'center',
   },
   picker: {
-    flex: 1,
     height: 52,
-    marginLeft: -10,
     color: '#333',
     backgroundColor: 'transparent',
+    marginLeft: -12,
   },
   pickerItem: {
     fontSize: 16,
@@ -329,5 +348,35 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+  },
+  pickerText: {
+    fontSize: 16,
+    fontFamily: 'Inter-Regular',
+    color: '#333',
+  },
+  placeholderText: {
+    color: '#999',
+  },
+  pickerModalContent: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+  },
+  genderOption: {
+    paddingVertical: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E8E8E8',
+    marginVertical: 5,
+  },
+  genderOptionText: {
+    fontSize: 18,
+    fontFamily: 'Inter-Regular',
+    color: '#333',
+    textAlign: 'center',
   },
 });
