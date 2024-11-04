@@ -16,6 +16,7 @@ export function AuthNavigator() {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="ProfileSetup" component={ProfileSetupScreen} />
+      
     </Stack.Navigator>
   );
 }

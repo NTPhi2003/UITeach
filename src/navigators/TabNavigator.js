@@ -1,15 +1,18 @@
-// Nguyễn Thành Phi - 21521268
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen';
-import AccountScreen from '../screens/ProfileScreen';
+import AccountScreen from '../screens/AccountScreen';
+import CourseScreen from '../screens/CourseScreen';
+import ProgressScreen from '../screens/ProgressScreen';
+import ExamScreen from '../screens/ExamScreen';
 
 const Tab = createBottomTabNavigator();
 
 export function TabNavigator() {
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
@@ -19,10 +22,14 @@ export function TabNavigator() {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Category') {
             iconName = focused ? 'grid' : 'grid-outline';
-          } else if (route.name === 'Favorite') {
-            iconName = focused ? 'heart' : 'heart-outline';
+          } else if (route.name === 'Courses') {
+            iconName = focused ? 'book' : 'book-outline';
           } else if (route.name === 'Account') {
             iconName = focused ? 'person' : 'person-outline';
+          } else if (route.name === 'Progress') {
+            iconName = focused ? 'library' : 'library-outline';
+          } else if (route.name === 'Exam') {
+            iconName = focused ? 'reader' : 'reader-outline';
           }
 
           return <Ionicons name={iconName} size={24} color={color} />;
@@ -36,21 +43,14 @@ export function TabNavigator() {
         },
         tabBarLabelStyle: {
           fontSize: 12,
+          fontWeight: 'semibold',
         },
       })}
     >
+      <Tab.Screen name="Progress" component={ProgressScreen} />
+      <Tab.Screen name="Courses" component={CourseScreen} />
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Category" component={CategoryScreen} />
-      <Tab.Screen 
-        name="Favorite" 
-        component={FavoriteScreen}
-        options={{
-          tabBarBadge: 3,
-          tabBarBadgeStyle: {
-            backgroundColor: '#FF3B30',
-          }
-        }}
-      />
+      <Tab.Screen name="Exam" component={ExamScreen} />
       <Tab.Screen name="Account" component={AccountScreen} />
     </Tab.Navigator>
   );

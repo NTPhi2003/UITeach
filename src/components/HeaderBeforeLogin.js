@@ -6,7 +6,7 @@ export default function HeaderBeforeLogin() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View style={styles.safeArea}>
       <View style={styles.headerContainer}>
         <View style={styles.header}>
           <View style={styles.logoContainer}>
@@ -34,7 +34,7 @@ export default function HeaderBeforeLogin() {
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

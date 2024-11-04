@@ -4,18 +4,19 @@ import { AuthContext } from '../App';
 import { Ionicons } from '@expo/vector-icons';
 import BackButton from '../components/BackButton';
 import CustomInput from '../components/CustomInput';
+import { tempUser } from '../data/User';
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { setUser } = useContext(AuthContext);
+  const { user,setUser } = useContext(AuthContext);
   const [usernameFocused, setUsernameFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
-    if (username === '21521268@gm.uit.edu.vn' && password === 'nguyenthanhphi') {
-      setUser({ email: username });
+    if (username === '123' && password === '123') {
+      setUser(tempUser);
     } else {
       Alert.alert('Tên đăng nhập hoặc mật khẩu không đúng');
     }
