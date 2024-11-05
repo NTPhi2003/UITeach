@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, ScrollView, SafeAreaView, ImageBackground, Dimensions, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TextInput, ScrollView, SafeAreaView, StatusBar, ImageBackground, Dimensions, FlatList, TouchableOpacity } from 'react-native';
 import HeaderBeforeLogin from '../components/HeaderBeforeLogin';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -52,6 +52,7 @@ export default function IntroductionScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="transparent" translucent barStyle="dark-content" />
       <HeaderBeforeLogin />
       <ScrollView style={styles.content}>
         {/* First Content */}

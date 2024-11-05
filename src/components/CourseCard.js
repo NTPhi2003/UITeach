@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   imageContainer: {
-    height: 300,
+    height: 280,
     backgroundColor: '#f5f5f5',
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,

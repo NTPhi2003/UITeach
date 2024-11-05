@@ -37,6 +37,7 @@ export function TabNavigator() {
         tabBarActiveTintColor: '#4B7BE5',
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: {
+          marginBottom: 10,
           height: 60,
           paddingBottom: 10,
           paddingTop: 5,
