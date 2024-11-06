@@ -16,7 +16,7 @@ export default function AccountScreen() {
       id: 1,
       icon: 'user',
       title: 'Thông tin của tôi',
-      screen: 'Profile'
+      screen: 'AccountInfo'
     },
     {
       id: 2,
@@ -72,7 +72,7 @@ export default function AccountScreen() {
         <View style={styles.profileSection}>
           <View style={styles.avatarContainer}>
             <Image
-              source= {tempUser.avatar} // Thay đường dẫn phù hợp
+              source= {tempUser.avatar}
               style={styles.avatar}
             />
             <TouchableOpacity style={styles.editButton}>

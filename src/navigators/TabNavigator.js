@@ -2,10 +2,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen';
-import AccountScreen from '../screens/AccountScreen';
 import CourseScreen from '../screens/CourseScreen';
 import ProgressScreen from '../screens/ProgressScreen';
-import ExamScreen from '../screens/ExamScreen';
+import { AccountNavigator } from './AccountNavigator';
+import { ExamNavigator } from './ExamNavigator'
+
 
 const Tab = createBottomTabNavigator();
 
@@ -37,9 +38,8 @@ export function TabNavigator() {
         tabBarActiveTintColor: '#4B7BE5',
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: {
-          marginBottom: 10,
-          height: 60,
-          paddingBottom: 10,
+          height: 70,
+          paddingBottom: 20,
           paddingTop: 5,
         },
         tabBarLabelStyle: {
@@ -48,11 +48,13 @@ export function TabNavigator() {
         },
       })}
     >
-      <Tab.Screen name="Progress" component={ProgressScreen} />
+      <Tab.Screen name="Progress" component={ProgressScreen}
+
+      />
       <Tab.Screen name="Courses" component={CourseScreen} />
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Exam" component={ExamScreen} />
-      <Tab.Screen name="Account" component={AccountScreen} />
+      <Tab.Screen name="Exam" component={ExamNavigator} />
+      <Tab.Screen name="Account" component={AccountNavigator} />
     </Tab.Navigator>
   );
 }

@@ -3,7 +3,8 @@ export const tempUser = {
     name: "Nguyễn Thành Luân",
     email: "luan@gmail.com",
     isLoggedIn: true,
-    gender: "Male",
-    dateOfBirth: "2002-01-01",
+    gender: "Nam",
+    dateOfBirth: "2002/01/01",
+    phoneNumber: "0953476263",
     avatar: require("../../assets/userTempImg.png"),
   };
