@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity,SafeAreaProvider,SafeAreaView } from 'react-native';
-import tempExams from '../data/Exams';
+import {tempExams} from '../data/Exams';
 import BackButton from '../components/BackButton';
 
 export default function ExamDetailScreen() {

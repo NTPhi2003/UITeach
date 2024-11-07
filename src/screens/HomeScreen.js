@@ -1,4 +1,3 @@
-// Nguyễn Thành Phi - 21521268
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, StatusBar, Dimensions, FlatList, SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';

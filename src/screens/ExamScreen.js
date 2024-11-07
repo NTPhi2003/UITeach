@@ -1,10 +1,25 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,SafeAreaProvider,SafeAreaView, Dimensions, FlatList } from 'react-native';
+import React, {useState} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Dimensions, FlatList } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import CourseCard from '../components/CourseCard';
-import tempExams from '../data/Exams';
+import {tempExams} from '../data/Exams';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ExamScreen() {
+  const [selected, setSelected] = useState('all'); // 'all' là giá trị mặc định
 
+  const filteredExams = () => {
+    if (selected === 'math') {
+      return tempExams.filter(exam => exam.courseId === 2);
+    } else if (selected === 'IT') {
+      return tempExams.filter(exam => exam.courseId === 1);
+    }
+    return tempExams; // Trả về tất cả nếu selected là 'all'
+  };
+
+  const handlePress = (value) => {
+    setSelected(value);
+  };
   const renderExam = ({ item }) => (
     <CourseCard
       title={item.title}
@@ -14,26 +29,51 @@ export default function ExamScreen() {
     />
   );
 
+  const handleExamScroll = (event) => {
+    const scrollPosition = event.nativeEvent.contentOffset.x;
+    const index = Math.round(scrollPosition / (Dimensions.get('window').width - 32));
+  };
+
+
   return (
     <SafeAreaProvider>
         <SafeAreaView style={styles.container}>
           {/* Header */}
-
-          <View style={styles.header}>
-            
+          <View style={styles.header}>  
             <Text style={styles.headerTitle}>Thư viện đề thi</Text>
+            <View style={styles.buttons}>
+              <TouchableOpacity
+                style={[styles.button, selected === 'all' && styles.selectedButton]}
+                onPress={() => handlePress('all')}
+              >
+                <Text style={[styles.buttonText, selected === 'all' && styles.selectedText]}>Tất cả</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, selected === 'math' && styles.selectedButton]}
+                onPress={() => handlePress('math')}
+              >
+                <Text style={[styles.buttonText, selected === 'math' && styles.selectedText]}>Toán đại cương</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, selected === 'IT' && styles.selectedButton]}
+                onPress={() => handlePress('IT')}
+              >
+                <Text style={[styles.buttonText, selected === 'IT' && styles.selectedText]}>Cơ sở ngành</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-  
+
           
   
           {/* Exams List */}
           <View style={styles.ExamsList}>
             <FlatList
-              data={tempExams}
+              data={filteredExams()}
               renderItem={renderExam}
-              pagingEnabled
-              showsHorizontalScrollIndicator={false}
               keyExtractor={item => item.id.toString()}
+              showsVerticalScrollIndicator={false}
+              onScroll={handleExamScroll}
+              style={styles.flatList}
             />
           </View>
         </SafeAreaView>
@@ -48,12 +88,49 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  ExamsList: {
+    flex: 1,
+    paddingVertical: 20,
+    position: 'relative',
+  },
   header: {
-    flexDirection: 'row',
+    flexDirection: 'collum',
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
     backgroundColor: '#fff',
-    marginTop: 30,
+    marginTop: 20,
+    
   },
+  headerTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#2282FE',
+    marginBottom: 20,
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    gap: 16,
+  },
+  button: {
+    padding: 10,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    backgroundColor: 'white',
+  },
+  selectedButton: {
+    backgroundColor: '#2282FE', // Màu xanh khi được chọn
+  },
+  buttonText: {
+    fontSize: 16,
+    color: 'black',
+  },
+  selectedText: {
+    color: 'white', // Màu chữ trắng khi được chọn
+  },
+  flatList: {
+    
+  }
 });
