@@ -1,14 +1,16 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
 // Lấy chiều rộng màn hình
 const screenWidth = Dimensions.get('window').width;
 // Tính toán padding và margin
 const horizontalPadding = 32; // 16 * 2 cho left và right padding
 const cardWidth = screenWidth - horizontalPadding;
+const CourseCard = ({ title, description, duration, image, onPress }) => {
+  const navigation = useNavigation();
 
-const CourseCard = ({ title, description, duration, image }) => {
   return (
     <View style={styles.card}>
       <View style={styles.imageContainer}>
@@ -19,7 +21,9 @@ const CourseCard = ({ title, description, duration, image }) => {
         />
       </View>
       <View style={styles.content}>
-        <Text style={styles.title}>{title}</Text>
+        <TouchableOpacity onPress={onPress}>
+          <Text style={styles.title}>{title}</Text>
+        </TouchableOpacity>
         <Text style={styles.description} numberOfLines={3}>
           {description}
         </Text>
@@ -28,7 +32,10 @@ const CourseCard = ({ title, description, duration, image }) => {
             <Icon name="time-outline" size={16} color="#666" />
             <Text style={styles.duration}>{duration}</Text>
           </View>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity 
+            style={styles.button} 
+            onPress={onPress}
+          >
             <Text style={styles.buttonText}>Học ngay</Text>
           </TouchableOpacity>
         </View>

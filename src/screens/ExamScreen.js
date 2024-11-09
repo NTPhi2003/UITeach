@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function ExamScreen() {
   const [selected, setSelected] = useState('all'); // 'all' là giá trị mặc định
-
+  const navigation = useNavigation();
   const filteredExams = () => {
     if (selected === 'math') {
       return tempExams.filter(exam => exam.courseId === 2);
@@ -26,13 +26,11 @@ export default function ExamScreen() {
       description={item.description || ""}
       duration={item.duration}
       image={item.image}
+      examData={item}
+      onPress={() => navigation.navigate("ExamDetail", { examData: item })}
+
     />
   );
-
-  const handleExamScroll = (event) => {
-    const scrollPosition = event.nativeEvent.contentOffset.x;
-    const index = Math.round(scrollPosition / (Dimensions.get('window').width - 32));
-  };
 
 
   return (
@@ -63,8 +61,7 @@ export default function ExamScreen() {
             </View>
           </View>
 
-          
-  
+        
           {/* Exams List */}
           <View style={styles.ExamsList}>
             <FlatList
@@ -72,7 +69,6 @@ export default function ExamScreen() {
               renderItem={renderExam}
               keyExtractor={item => item.id.toString()}
               showsVerticalScrollIndicator={false}
-              onScroll={handleExamScroll}
               style={styles.flatList}
             />
           </View>

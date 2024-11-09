@@ -48,6 +48,10 @@ export default function HomeScreen() {
       description={item.description || ""}
       duration={item.duration}
       image={item.image}
+      onPress={() => navigation.navigate('Exam', {
+        screen: 'ExamDetail',
+        params: { examData: item }
+      })}
     />
   );
 

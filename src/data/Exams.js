@@ -54,9 +54,10 @@ export const tempExams = [
     {
         id: 5,
         title: "Đề thi Xác xuất thống kê - CKII năm 2016-2017",
-        image: require("../../assets/XSTK.png"),
+        image: require("../../assets/XSTK.jpg"),
         imageTest: [
-            require("../../assets/DeThi_XSTK.png")
+            require("../../assets/DeThi_XSTK.jpg"),
+            require("../../assets/DeThi.png"),
         ],
         isPublished: true,
         DateCreated: "2024-11-04",
