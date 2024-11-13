@@ -6,6 +6,7 @@ import CourseScreen from '../screens/CourseScreen';
 import ProgressScreen from '../screens/ProgressScreen';
 import { AccountNavigator } from './AccountNavigator';
 import { ExamNavigator } from './ExamNavigator'
+import { CourseNavigator } from './CourseNavigator'
 
 
 const Tab = createBottomTabNavigator();
@@ -51,7 +52,7 @@ export function TabNavigator() {
       <Tab.Screen name="Progress" component={ProgressScreen}
 
       />
-      <Tab.Screen name="Courses" component={CourseScreen} />
+      <Tab.Screen name="Courses" component={CourseNavigator} />
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Exam" component={ExamNavigator} />
       <Tab.Screen name="Account" component={AccountNavigator} />

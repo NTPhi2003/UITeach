@@ -34,7 +34,7 @@ export const tempSubjects = [
                 ]  
             },
             {
-                id: 1,
+                id: 2,
                 topic: "Thuật toán",
                 time: 100,
                 data: [
@@ -90,7 +90,7 @@ export const tempSubjects = [
                 ]  
             },
             {
-                id: 1,
+                id: 2,
                 topic: "Thuật toán",
                 time: 100,
                 data: [
@@ -146,7 +146,7 @@ export const tempSubjects = [
                 ]  
             },
             {
-                id: 1,
+                id: 2,
                 topic: "Thuật toán",
                 time: 100,
                 data: [
@@ -202,7 +202,7 @@ export const tempSubjects = [
                 ]  
             },
             {
-                id: 1,
+                id: 2,
                 topic: "Thuật toán",
                 time: 100,
                 data: [
@@ -261,7 +261,7 @@ export const tempSubjects = [
                 ]  
             },
             {
-                id: 1,
+                id: 2,
                 topic: "Thuật toán",
                 time: 100,
                 data: [
@@ -321,7 +321,7 @@ export const tempSubjects = [
                 ]  
             },
             {
-                id: 1,
+                id: 2,
                 topic: "Thuật toán",
                 time: 100,
                 data: [
@@ -378,7 +378,7 @@ export const tempSubjects = [
                 ]  
             },
             {
-                id: 1,
+                id: 2,
                 topic: "Thuật toán",
                 time: 100,
                 data: [
@@ -435,7 +435,7 @@ export const tempSubjects = [
                 ]  
             },
             {
-                id: 1,
+                id: 2,
                 topic: "Thuật toán",
                 time: 100,
                 data: [
@@ -492,7 +492,7 @@ export const tempSubjects = [
                 ]  
             },
             {
-                id: 1,
+                id: 2,
                 topic: "Thuật toán",
                 time: 100,
                 data: [
