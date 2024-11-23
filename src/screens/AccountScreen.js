@@ -1,82 +1,81 @@
-import React, { useContext } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { AuthContext } from '../App';
-import SettingItem from '../components/SettingItem';
-import { tempUser } from '../data/User';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Feather';
+import React, { useContext } from 'react'
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from 'react-native'
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import SettingItem from '../components/SettingItem'
+import { tempUser } from '../data/User'
+import { useNavigation } from '@react-navigation/native'
+import Icon from 'react-native-vector-icons/Feather'
+import { AuthContext } from '../context/authContext'
 
 export default function AccountScreen() {
-  const { setUser } = useContext(AuthContext);
-  const navigation = useNavigation();
+  const { setUser } = useContext(AuthContext)
+  const navigation = useNavigation()
 
   const settingsData = [
     {
       id: 1,
       icon: 'user',
       title: 'Thông tin của tôi',
-      screen: 'AccountInfo'
+      screen: 'AccountInfo',
     },
     {
       id: 2,
       icon: 'lock',
       title: 'Đổi mật khẩu',
-      screen: 'ChangePassword'
+      screen: 'ChangePassword',
     },
     {
       id: 3,
       icon: 'settings',
       title: 'Cài đặt',
-      screen: 'Settings'
+      screen: 'Settings',
     },
     {
       id: 4,
       icon: 'log-out',
       title: 'Đăng xuất',
-      screen: 'Login'
-    }
-  ];
+      screen: 'Login',
+    },
+  ]
 
   const handleItemPress = (item) => {
     if (item.title === 'Đăng xuất') {
-      Alert.alert(
-        'Đăng xuất',
-        'Bạn có chắc chắn muốn đăng xuất?',
-        [
-          {
-            text: 'Hủy',
-            style: 'cancel',
-          },
-          {
-            text: 'Đồng ý',
-            onPress: () => setUser(null),
-          },
-        ],
-      );
+      Alert.alert('Đăng xuất', 'Bạn có chắc chắn muốn đăng xuất?', [
+        {
+          text: 'Hủy',
+          style: 'cancel',
+        },
+        {
+          text: 'Đồng ý',
+          onPress: () => setUser(null),
+        },
+      ])
     } else {
-      navigation.navigate(item.screen);
+      navigation.navigate(item.screen)
     }
-  };
+  }
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
-          
           <Text style={styles.headerTitle}>Hồ sơ</Text>
         </View>
 
         {/* Profile Section */}
         <View style={styles.profileSection}>
           <View style={styles.avatarContainer}>
-            <Image
-              source= {tempUser.avatar}
-              style={styles.avatar}
-            />
+            <Image source={tempUser.avatar} style={styles.avatar} />
             <TouchableOpacity style={styles.editButton}>
-              <Icon name="edit-2" size={16} color="#fff" />
+              <Icon name='edit-2' size={16} color='#fff' />
             </TouchableOpacity>
           </View>
           <Text style={styles.userName}>{tempUser.name}</Text>
@@ -96,7 +95,7 @@ export default function AccountScreen() {
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -166,6 +165,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#000',
   },
-  settingsList: {
-  },
-});
+  settingsList: {},
+})
+
