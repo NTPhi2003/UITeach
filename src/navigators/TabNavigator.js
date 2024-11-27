@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import HomeScreen from '../screens/HomeScreen'
 import CourseScreen from '../screens/CourseScreen'
 import ProgressScreen from '../screens/ProgressScreen'
+import { ProgressNavigator } from './ProgressNavigator'
 import { AccountNavigator } from './AccountNavigator'
 import { ExamNavigator } from './ExamNavigator'
 import { CourseNavigator } from './CourseNavigator'
@@ -48,7 +49,7 @@ export function TabNavigator() {
         },
       })}
     >
-      <Tab.Screen name='Progress' component={ProgressScreen} />
+      <Tab.Screen name='Progress' component={ProgressNavigator} />
       <Tab.Screen name='Courses' component={CourseNavigator} />
       <Tab.Screen name='Home' component={HomeScreen} />
       <Tab.Screen name='Exam' component={ExamNavigator} />

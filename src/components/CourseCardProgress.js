@@ -1,19 +1,31 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import CircularProgress from 'react-native-circular-progress-indicator';
 
-const CourseCard = ({ title, author, image, onPress }) => {
+const CourseCardProgress = ({ title, duration, lessons, progress, image, onPress }) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.card}>
         <Image source={image} style={styles.image} />
         <View style={styles.textContainer}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.author}>{author}</Text>
+          <View style={styles.infoContainer}>
+            <Text style={styles.info}>{duration} • </Text>
+            <Text style={styles.info}>{lessons} bài tập</Text>
+          </View>
         </View>
-        <Image 
-          source={require('../../assets/play.png')} 
-          style={styles.playIcon}
-        />
+        <View style={styles.progressContainer}>
+          <CircularProgress
+            value={progress}
+            radius={20}
+            duration={1000}
+            progressValueColor={'#FF6B00'}
+            activeStrokeColor={'#FF6B00'}
+            inActiveStrokeColor={'#F0F0F0'}
+            inActiveStrokeWidth={5}
+            activeStrokeWidth={5}
+          />
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -47,16 +59,18 @@ const styles = StyleSheet.create({
     color: '#305F72',
     maxWidth: 190
   },
-  author: {
+  infoContainer: {
+    flexDirection: 'row',
+    marginTop: 4,
+  },
+  info: {
     fontSize: 14.5,
     color: '#FF6B00',
     fontWeight: 'bold',
-    marginTop: 4,
   },
-  playIcon: {
-    width: 34,
-    height: 34,
-  },
+  progressContainer: {
+    marginLeft: 10,
+  }
 });
 
-export default CourseCard;
+export default CourseCardProgress;

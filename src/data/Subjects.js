@@ -403,7 +403,7 @@ export const tempSubjects = [
 
     {
         id: 8,
-        image: require("../../assets/XSTK.jpg"),
+        image: require("../../assets/CTRR.png"),
         title: "Cấu trúc rời rạc",
         description: "Môn học sẽ cung cấp kiến thức về Cung cấp cho sinh viên những khái niệm cơ bản về mạng máy tính và truyền dữ liệu trên mạng...",
         isPublished: true,
