@@ -4,7 +4,7 @@ import StudyScreen from '../screens/StudyScreen';
 
 const Stack = createStackNavigator();
 
-export function ExamNavigator() {
+export function CourseNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="CourseMain" component={CourseScreen} />

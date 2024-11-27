@@ -10,7 +10,7 @@ export const tempSubjects = [
         DateUpdated: "2024-11-04",
         courseId: 1,
         duration: "20 tiếng",
-        teachBy: "Mai Tiến Dũng",
+        author: "Mai Tiến Dũng",
         lessons: [
             {
                 id: 1,
@@ -66,7 +66,7 @@ export const tempSubjects = [
         DateUpdated: "2024-11-04",
         courseId: 1,
         duration: "20 tiếng",
-        teachBy: "Nguyễn Hữu Lượng",
+        author: "Nguyễn Hữu Lượng",
         lessons: [
             {
                 id: 1,
@@ -122,7 +122,7 @@ export const tempSubjects = [
         DateUpdated: "2024-11-04",
         courseId: 1,
         duration: "20 tiếng",
-        teachBy: "Nguyễn Tuấn Nam",
+        author: "Nguyễn Tuấn Nam",
         lessons: [
             {
                 id: 1,
@@ -178,7 +178,7 @@ export const tempSubjects = [
         DateUpdated: "2024-11-04",
         courseId: 1,
         duration: "20 tiếng",
-        teachBy: "Phạm Thế Sơn",
+        author: "Phạm Thế Sơn",
         lessons: [
             {
                 id: 1,
@@ -237,7 +237,7 @@ export const tempSubjects = [
         DateUpdated: "2024-11-04",
         courseId: 1,
         duration: "20 tiếng",
-        teachBy: "Mai Tiến Dũng",
+        author: "Mai Tiến Dũng",
         lessons: [
             {
                 id: 1,
@@ -297,7 +297,7 @@ export const tempSubjects = [
         DateUpdated: "2024-11-04",
         courseId: 2,
         duration: "20 tiếng",
-        teachBy: "Nguyễn Minh Trí",
+        author: "Nguyễn Minh Trí",
         lessons: [
             {
                 id: 1,
@@ -354,7 +354,7 @@ export const tempSubjects = [
         DateUpdated: "2024-11-04",
         courseId: 2,
         duration: "20 tiếng",
-        teachBy: "Hà Mạnh Linh",
+        author: "Hà Mạnh Linh",
         lessons: [
             {
                 id: 1,
@@ -411,7 +411,7 @@ export const tempSubjects = [
         DateUpdated: "2024-11-04",
         courseId: 2,
         duration: "20 tiếng",
-        teachBy: "Lê Hoàng Tuấn",
+        author: "Lê Hoàng Tuấn",
         lessons: [
             {
                 id: 1,
@@ -468,7 +468,7 @@ export const tempSubjects = [
         DateUpdated: "2024-11-04",
         courseId: 2,
         duration: "20 tiếng",
-        teachBy: "Cao Thanh Tình",
+        author: "Cao Thanh Tình",
         lessons: [
             {
                 id: 1,

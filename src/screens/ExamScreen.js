@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Dimensions, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, Dimensions, FlatList, StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import CourseCard from '../components/CourseCard';
 import {tempExams} from '../data/Exams';
@@ -35,6 +35,7 @@ export default function ExamScreen() {
 
   return (
     <SafeAreaProvider>
+      <StatusBar backgroundColor="transparent" translucent barStyle="dark-content" />
         <SafeAreaView style={styles.container}>
           {/* Header */}
           <View style={styles.header}>  
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     backgroundColor: '#fff',
-    marginTop: 20,
+    marginTop: 35,
     
   },
   headerTitle: {
