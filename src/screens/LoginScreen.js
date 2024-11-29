@@ -20,6 +20,8 @@ import axios from 'axios'
 import { BASE_URL, LOGIN_API_URL } from '../constant/api'
 import { X_API_KEY } from '../constant/key'
 import { notAuthInstance } from '../axiosInstance/notAuthInstance'
+import { toast, ToastPosition } from '@backpackapp-io/react-native-toast'
+import { bottomToastPromise } from '../utils/toastUtil'
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('')
@@ -31,7 +33,7 @@ export default function LoginScreen({ navigation }) {
 
   const handleLogin = async () => {
     console.log('Login processing')
-    notAuthInstance
+    const loginPromise = notAuthInstance
       .post(LOGIN_API_URL, {
         username: username.trim(),
         password: password.trim(),
@@ -40,10 +42,15 @@ export default function LoginScreen({ navigation }) {
         console.log(response.data)
         setUser(response.data.metadata)
       })
-      .catch(function (error) {
-        console.log(error)
-        Alert.alert('Tên đăng nhập hoặc mật khẩu không đúng')
+      .catch((err) => {
+        console.log(err)
+        throw err
       })
+    bottomToastPromise(loginPromise, {
+      loading: 'Đang xử lý...',
+      success: 'Đăng nhập thành công.',
+      error: 'Tài khoản hoặc mật khẩu không đúng.',
+    })
   }
 
   return (
