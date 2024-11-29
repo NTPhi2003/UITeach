@@ -15,23 +15,44 @@ import { Ionicons } from '@expo/vector-icons'
 import BackButton from '../components/BackButton'
 import CustomInput from '../components/CustomInput'
 import { AuthContext } from '../context/authContext'
+import axios from 'axios'
+import { SIGNUP_API_URL } from '../constant/api'
+import { notAuthInstance } from '../axiosInstance/notAuthInstance'
 
-export default function ProfileSetupScreen({ navigation }) {
+export default function ProfileSetupScreen({ navigation, route }) {
+  const { username, email: preEmail, password } = route.params
   const [name, setName] = useState('')
   const [birthday, setBirthday] = useState('')
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(preEmail)
   const [phone, setPhone] = useState('')
+  const [gender, setGender] = useState('')
+
   const [nameFocused, setNameFocused] = useState(false)
   const [birthdayFocused, setBirthdayFocused] = useState(false)
   const [emailFocused, setEmailFocused] = useState(false)
   const [phoneFocused, setPhoneFocused] = useState(false)
-  const [gender, setGender] = useState('')
   const [genderFocused, setGenderFocused] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [showGenderPicker, setShowGenderPicker] = useState(false)
 
-  const handleComplete = () => {
-    setShowSuccessModal(true)
+  const handleComplete = async () => {
+    notAuthInstance
+      .post(SIGNUP_API_URL, {
+        username,
+        password,
+        email,
+        role: 'student',
+        name,
+        dateOfBirth: birthday,
+        phone,
+        gender: gender === 'male' ? 'Nam' : gender === 'female' ? 'Nữ' : 'Khác',
+      })
+      .then((res) => {
+        setShowSuccessModal(true)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   const handleLoginPress = () => {

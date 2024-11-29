@@ -19,6 +19,7 @@ import { AuthContext } from '../context/authContext'
 import axios from 'axios'
 import { BASE_URL, LOGIN_API_URL } from '../constant/api'
 import { X_API_KEY } from '../constant/key'
+import { notAuthInstance } from '../axiosInstance/notAuthInstance'
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('')
@@ -30,25 +31,17 @@ export default function LoginScreen({ navigation }) {
 
   const handleLogin = async () => {
     console.log('Login processing')
-    axios
-      .post(
-        LOGIN_API_URL,
-        {
-          username: username.trim(),
-          password: password.trim(),
-        },
-        {
-          headers: {
-            'x-api-key': X_API_KEY,
-          },
-        },
-      )
+    notAuthInstance
+      .post(LOGIN_API_URL, {
+        username: username.trim(),
+        password: password.trim(),
+      })
       .then(function (response) {
         console.log(response.data)
         setUser(response.data.metadata)
       })
       .catch(function (error) {
-        console.log(error.message)
+        console.log(error)
         Alert.alert('Tên đăng nhập hoặc mật khẩu không đúng')
       })
   }

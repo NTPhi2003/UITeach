@@ -93,7 +93,13 @@ export default function RegisterScreen({ navigation }) {
 
             <TouchableOpacity
               style={styles.registerButton}
-              onPress={() => navigation.navigate('ProfileSetup')}
+              onPress={() =>
+                navigation.navigate('ProfileSetup', {
+                  email,
+                  username,
+                  password,
+                })
+              }
             >
               <Text style={styles.buttonText}>Tiếp tục</Text>
             </TouchableOpacity>
