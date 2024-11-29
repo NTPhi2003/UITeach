@@ -59,7 +59,7 @@ export default function CourseScreen() {
             size={24} 
             color="#fff" 
             style={styles.backButton}
-            onPress={() => navigation.goBack()} 
+            onPress={() => navigation.navigate('Home')} 
           />
           <View style={styles.headerTitleContainer}>
             <Image 
@@ -100,9 +100,7 @@ export default function CourseScreen() {
               title={course.title}
               author={course.author}
               image={course.image}
-              onPress={() => {
-                navigation.navigate('CourseDetail', { courseId: course.id });
-              }}
+              onPress={() => navigation.navigate("Study", { subjectData: course })}
             />
           ))}
         </ScrollView>

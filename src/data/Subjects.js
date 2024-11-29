@@ -16,20 +16,20 @@ export const tempSubjects = [
                 id: 1,
                 topic: "Giới thiệu",
                 time: 15,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Giới thiệu tổng quan",
                         videoId: "1nQe2ZiwWFw",
                         time: 5,
-                        isComplete: true
+                        
                     },
                     {
                         id: 2,
                         title: "Cài đặt môi trường",
                         videoId: "1nQe2ZiwWFw",
                         time: 15,
-                        isComplete: false
+                        
                     },
                 ]  
             },
@@ -37,20 +37,20 @@ export const tempSubjects = [
                 id: 2,
                 topic: "Thuật toán",
                 time: 100,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Khái niệm",
                         videoId: "1nQe2ZiwWFw",
                         time: 20,
-                        isComplete: true
+                        
                     },
                     {
                         id: 2,
                         title: "Bài tập ví dụ",
                         videoId: "1nQe2ZiwWFw",
                         time: 80,
-                        isComplete: false
+                        
                     },
                 ]  
             }
@@ -72,20 +72,20 @@ export const tempSubjects = [
                 id: 1,
                 topic: "Giới thiệu",
                 time: 15,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Giới thiệu tổng quan",
                         videoId: "1nQe2ZiwWFw",
                         time: 5,
-                        isComplete: true
+                        
                     },
                     {
                         id: 2,
                         title: "Cài đặt môi trường",
                         videoId: "1nQe2ZiwWFw",
                         time: 15,
-                        isComplete: false
+                        
                     },
                 ]  
             },
@@ -93,20 +93,20 @@ export const tempSubjects = [
                 id: 2,
                 topic: "Thuật toán",
                 time: 100,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Khái niệm",
                         videoId: "1nQe2ZiwWFw",
                         time: 20,
-                        isComplete: false
+                        
                     },
                     {
                         id: 2,
                         title: "Bài tập ví dụ",
                         videoId: "1nQe2ZiwWFw",
                         time: 80,
-                        isComplete: false
+                        
                     },
                 ]  
             }
@@ -128,20 +128,20 @@ export const tempSubjects = [
                 id: 1,
                 topic: "Giới thiệu",
                 time: 15,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Giới thiệu tổng quan",
                         videoId: "1nQe2ZiwWFw",
                         time: 5,
-                        isComplete: true
+                        
                     },
                     {
                         id: 2,
                         title: "Cài đặt môi trường",
                         videoId: "1nQe2ZiwWFw",
                         time: 15,
-                        isComplete: true
+                        
                     },
                 ]  
             },
@@ -149,20 +149,20 @@ export const tempSubjects = [
                 id: 2,
                 topic: "Thuật toán",
                 time: 100,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Khái niệm",
                         videoId: "1nQe2ZiwWFw",
                         time: 20,
-                        isComplete: true
+                        
                     },
                     {
                         id: 2,
                         title: "Bài tập ví dụ",
                         videoId: "1nQe2ZiwWFw",
                         time: 80,
-                        isComplete: false
+                        
                     },
                 ]  
             }
@@ -184,20 +184,20 @@ export const tempSubjects = [
                 id: 1,
                 topic: "Giới thiệu",
                 time: 15,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Giới thiệu tổng quan",
                         videoId: "1nQe2ZiwWFw",
                         time: 5,
-                        isComplete: true
+                        
                     },
                     {
                         id: 2,
                         title: "Cài đặt môi trường",
                         videoId: "1nQe2ZiwWFw",
                         time: 15,
-                        isComplete: true
+                        
                     },
                 ]  
             },
@@ -205,20 +205,20 @@ export const tempSubjects = [
                 id: 2,
                 topic: "Thuật toán",
                 time: 100,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Khái niệm",
                         videoId: "1nQe2ZiwWFw",
                         time: 20,
-                        isComplete: false
+                        
                     },
                     {
                         id: 2,
                         title: "Bài tập ví dụ",
                         videoId: "1nQe2ZiwWFw",
                         time: 80,
-                        isComplete: false
+                        
                     },
                 ]  
             }
@@ -243,20 +243,20 @@ export const tempSubjects = [
                 id: 1,
                 topic: "Giới thiệu",
                 time: 15,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Giới thiệu tổng quan",
                         videoId: "1nQe2ZiwWFw",
                         time: 5,
-                        isComplete: true
+                        
                     },
                     {
                         id: 2,
                         title: "Cài đặt môi trường",
                         videoId: "1nQe2ZiwWFw",
                         time: 15,
-                        isComplete: true
+                        
                     },
                 ]  
             },
@@ -264,20 +264,20 @@ export const tempSubjects = [
                 id: 2,
                 topic: "Thuật toán",
                 time: 100,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Khái niệm",
                         videoId: "1nQe2ZiwWFw",
                         time: 20,
-                        isComplete: false
+                        
                     },
                     {
                         id: 2,
                         title: "Bài tập ví dụ",
                         videoId: "1nQe2ZiwWFw",
                         time: 80,
-                        isComplete: false
+                        
                     },
                 ]  
             }
@@ -303,20 +303,20 @@ export const tempSubjects = [
                 id: 1,
                 topic: "Giới thiệu",
                 time: 15,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Giới thiệu tổng quan",
                         videoId: "1nQe2ZiwWFw",
                         time: 5,
-                        isComplete: true
+                        
                     },
                     {
                         id: 2,
                         title: "Cài đặt môi trường",
                         videoId: "1nQe2ZiwWFw",
                         time: 15,
-                        isComplete: true
+                        
                     },
                 ]  
             },
@@ -324,20 +324,20 @@ export const tempSubjects = [
                 id: 2,
                 topic: "Thuật toán",
                 time: 100,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Khái niệm",
                         videoId: "1nQe2ZiwWFw",
                         time: 20,
-                        isComplete: false
+                        
                     },
                     {
                         id: 2,
                         title: "Bài tập ví dụ",
                         videoId: "1nQe2ZiwWFw",
                         time: 80,
-                        isComplete: false
+                        
                     },
                 ]  
             }
@@ -360,20 +360,20 @@ export const tempSubjects = [
                 id: 1,
                 topic: "Giới thiệu",
                 time: 15,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Giới thiệu tổng quan",
                         videoId: "1nQe2ZiwWFw",
                         time: 5,
-                        isComplete: true
+                        
                     },
                     {
                         id: 2,
                         title: "Cài đặt môi trường",
                         videoId: "1nQe2ZiwWFw",
                         time: 15,
-                        isComplete: true
+                        
                     },
                 ]  
             },
@@ -381,20 +381,20 @@ export const tempSubjects = [
                 id: 2,
                 topic: "Thuật toán",
                 time: 100,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Khái niệm",
                         videoId: "1nQe2ZiwWFw",
                         time: 20,
-                        isComplete: false
+                        
                     },
                     {
                         id: 2,
                         title: "Bài tập ví dụ",
                         videoId: "1nQe2ZiwWFw",
                         time: 80,
-                        isComplete: false
+                        
                     },
                 ]  
             }
@@ -417,20 +417,20 @@ export const tempSubjects = [
                 id: 1,
                 topic: "Giới thiệu",
                 time: 15,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Giới thiệu tổng quan",
                         videoId: "1nQe2ZiwWFw",
                         time: 5,
-                        isComplete: true
+                        
                     },
                     {
                         id: 2,
                         title: "Cài đặt môi trường",
                         videoId: "1nQe2ZiwWFw",
                         time: 15,
-                        isComplete: true
+                        
                     },
                 ]  
             },
@@ -438,20 +438,20 @@ export const tempSubjects = [
                 id: 2,
                 topic: "Thuật toán",
                 time: 100,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Khái niệm",
                         videoId: "1nQe2ZiwWFw",
                         time: 20,
-                        isComplete: false
+                        
                     },
                     {
                         id: 2,
                         title: "Bài tập ví dụ",
                         videoId: "1nQe2ZiwWFw",
                         time: 80,
-                        isComplete: false
+                        
                     },
                 ]  
             }
@@ -474,20 +474,20 @@ export const tempSubjects = [
                 id: 1,
                 topic: "Giới thiệu",
                 time: 15,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Giới thiệu tổng quan",
                         videoId: "1nQe2ZiwWFw",
                         time: 5,
-                        isComplete: true
+                        
                     },
                     {
                         id: 2,
                         title: "Cài đặt môi trường",
                         videoId: "1nQe2ZiwWFw",
                         time: 15,
-                        isComplete: true
+                        
                     },
                 ]  
             },
@@ -495,20 +495,20 @@ export const tempSubjects = [
                 id: 2,
                 topic: "Thuật toán",
                 time: 100,
-                data: [
+                datas: [
                     {
                         id: 1,
                         title: "Khái niệm",
                         videoId: "1nQe2ZiwWFw",
                         time: 20,
-                        isComplete: false
+                        
                     },
                     {
                         id: 2,
                         title: "Bài tập ví dụ",
                         videoId: "1nQe2ZiwWFw",
                         time: 80,
-                        isComplete: false
+                        
                     },
                 ]  
             }
