@@ -27,7 +27,7 @@ export const tempSubjects = [
                     {
                         id: 2,
                         title: "Cài đặt môi trường",
-                        videoId: "1nQe2ZiwWFw",
+                        videoId: "AGNCMcVnUuM",
                         time: 15,
                         
                     },
@@ -41,14 +41,14 @@ export const tempSubjects = [
                     {
                         id: 1,
                         title: "Khái niệm",
-                        videoId: "1nQe2ZiwWFw",
+                        videoId: "F_fSrl7gqX8",
                         time: 20,
                         
                     },
                     {
                         id: 2,
                         title: "Bài tập ví dụ",
-                        videoId: "1nQe2ZiwWFw",
+                        videoId: "Z1D26z9l8y8",
                         time: 80,
                         
                     },
