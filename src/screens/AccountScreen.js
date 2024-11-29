@@ -13,6 +13,8 @@ import { tempUser } from '../data/User'
 import { useNavigation } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/Feather'
 import { AuthContext } from '../context/authContext'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { USER_INFO } from '../constant/nameOfKey'
 
 export default function AccountScreen() {
   const { user, setUser } = useContext(AuthContext)
@@ -62,7 +64,15 @@ export default function AccountScreen() {
         },
         {
           text: 'Đồng ý',
-          onPress: () => setUser(null),
+          onPress: async () => {
+            setUser(null)
+            try {
+              await AsyncStorage.removeItem(USER_INFO)
+            } catch (e) {
+              // saving error
+              console.log(e)
+            }
+          },
         },
       ])
     } else {

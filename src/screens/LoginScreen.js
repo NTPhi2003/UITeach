@@ -21,6 +21,8 @@ import { BASE_URL, LOGIN_API_URL } from '../constant/api'
 import { X_API_KEY } from '../constant/key'
 import { notAuthInstance } from '../axiosInstance/notAuthInstance'
 import { bottomToastPromise } from '../utils/toastUtil'
+import { USER_INFO } from '../constant/nameOfKey'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('')
@@ -40,6 +42,12 @@ export default function LoginScreen({ navigation }) {
       .then(function (response) {
         console.log(response.data)
         setUser(response.data.metadata)
+        AsyncStorage.setItem(
+          USER_INFO,
+          JSON.stringify(response.data.metadata),
+        ).catch((err) => {
+          console.log(err)
+        })
       })
       .catch((err) => {
         console.log(err)
