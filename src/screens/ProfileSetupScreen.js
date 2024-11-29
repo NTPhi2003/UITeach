@@ -1,42 +1,54 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Modal, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import BackButton from '../components/BackButton';
-import CustomInput from '../components/CustomInput';
+import React, { useContext, useState } from 'react'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Modal,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Platform,
+  Keyboard,
+} from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import BackButton from '../components/BackButton'
+import CustomInput from '../components/CustomInput'
+import { AuthContext } from '../context/authContext'
 
 export default function ProfileSetupScreen({ navigation }) {
-  const [name, setName] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [nameFocused, setNameFocused] = useState(false);
-  const [birthdayFocused, setBirthdayFocused] = useState(false);
-  const [emailFocused, setEmailFocused] = useState(false);
-  const [phoneFocused, setPhoneFocused] = useState(false);
-  const [gender, setGender] = useState('');
-  const [genderFocused, setGenderFocused] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [showGenderPicker, setShowGenderPicker] = useState(false);
+  const [name, setName] = useState('')
+  const [birthday, setBirthday] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [nameFocused, setNameFocused] = useState(false)
+  const [birthdayFocused, setBirthdayFocused] = useState(false)
+  const [emailFocused, setEmailFocused] = useState(false)
+  const [phoneFocused, setPhoneFocused] = useState(false)
+  const [gender, setGender] = useState('')
+  const [genderFocused, setGenderFocused] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [showGenderPicker, setShowGenderPicker] = useState(false)
 
   const handleComplete = () => {
-    setShowSuccessModal(true);
-  };
+    setShowSuccessModal(true)
+  }
 
   const handleLoginPress = () => {
-    setShowSuccessModal(false);
-    navigation.navigate('Login');
-  };
+    setShowSuccessModal(false)
+    navigation.navigate('Login')
+  }
 
   const handleGenderSelect = (value) => {
-    setGender(value);
-    setShowGenderPicker(false);
-    setGenderFocused(false);
-  };
+    setGender(value)
+    setShowGenderPicker(false)
+    setGenderFocused(false)
+  }
 
   return (
     <View style={styles.mainContainer}>
       <BackButton />
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoidingView}
       >
@@ -46,16 +58,16 @@ export default function ProfileSetupScreen({ navigation }) {
             {/* Avatar Section  */}
             <View style={styles.avatarContainer}>
               <View style={styles.avatar}>
-                <Ionicons name="person-outline" size={40} color="#999" />
+                <Ionicons name='person-outline' size={40} color='#999' />
                 <TouchableOpacity style={styles.editIcon}>
-                  <Ionicons name="pencil" size={16} color="#fff" />
+                  <Ionicons name='pencil' size={16} color='#fff' />
                 </TouchableOpacity>
               </View>
             </View>
 
             <CustomInput
-              placeholder="Họ và tên"
-              iconName="person-outline"
+              placeholder='Họ và tên'
+              iconName='person-outline'
               value={name}
               onChangeText={setName}
               isFocused={nameFocused}
@@ -64,8 +76,8 @@ export default function ProfileSetupScreen({ navigation }) {
             />
 
             <CustomInput
-              placeholder="Ngày/tháng/năm sinh"
-              iconName="calendar-outline"
+              placeholder='Ngày/tháng/năm sinh'
+              iconName='calendar-outline'
               value={birthday}
               onChangeText={setBirthday}
               isFocused={birthdayFocused}
@@ -74,8 +86,8 @@ export default function ProfileSetupScreen({ navigation }) {
             />
 
             <CustomInput
-              placeholder="Email"
-              iconName="mail-outline"
+              placeholder='Email'
+              iconName='mail-outline'
               value={email}
               onChangeText={setEmail}
               isFocused={emailFocused}
@@ -84,36 +96,43 @@ export default function ProfileSetupScreen({ navigation }) {
             />
 
             <CustomInput
-              placeholder="Số điện thoại"
-              iconName="call-outline"
+              placeholder='Số điện thoại'
+              iconName='call-outline'
               value={phone}
               onChangeText={setPhone}
               isFocused={phoneFocused}
               onFocus={() => setPhoneFocused(true)}
               onBlur={() => setPhoneFocused(false)}
-              keyboardType="phone-pad"
+              keyboardType='phone-pad'
             />
 
-            <TouchableOpacity 
-              style={[styles.inputContainer, genderFocused && styles.inputContainerFocused]}
+            <TouchableOpacity
+              style={[
+                styles.inputContainer,
+                genderFocused && styles.inputContainerFocused,
+              ]}
               onPress={() => setShowGenderPicker(true)}
             >
-              <Ionicons 
-                name="transgender-outline" 
-                size={20} 
-                color={genderFocused ? '#007BFF' : '#999'} 
+              <Ionicons
+                name='transgender-outline'
+                size={20}
+                color={genderFocused ? '#007BFF' : '#999'}
                 style={styles.icon}
               />
-              <Text style={[styles.pickerText, !gender && styles.placeholderText]}>
-                {gender ? (
-                  gender === 'male' ? 'Nam' : 
-                  gender === 'female' ? 'Nữ' : 
-                  'Khác'
-                ) : 'Giới tính'}
+              <Text
+                style={[styles.pickerText, !gender && styles.placeholderText]}
+              >
+                {gender
+                  ? gender === 'male'
+                    ? 'Nam'
+                    : gender === 'female'
+                      ? 'Nữ'
+                      : 'Khác'
+                  : 'Giới tính'}
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.continueButton}
               onPress={handleComplete}
             >
@@ -124,23 +143,19 @@ export default function ProfileSetupScreen({ navigation }) {
       </KeyboardAvoidingView>
 
       {/* Success Modal */}
-      <Modal
-        transparent={true}
-        visible={showSuccessModal}
-        animationType="fade"
-      >
+      <Modal transparent={true} visible={showSuccessModal} animationType='fade'>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.successIconContainer}>
-              <Ionicons name="checkmark-circle" size={60} color="#4CAF50" />
+              <Ionicons name='checkmark-circle' size={60} color='#4CAF50' />
             </View>
-            
+
             <Text style={styles.modalTitle}>Đăng ký thành công!</Text>
             <Text style={styles.modalMessage}>
               Tài khoản của bạn đã được tạo thành công
             </Text>
 
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.loginButton}
               onPress={handleLoginPress}
             >
@@ -154,25 +169,25 @@ export default function ProfileSetupScreen({ navigation }) {
       <Modal
         transparent={true}
         visible={showGenderPicker}
-        animationType="slide"
+        animationType='slide'
       >
         <TouchableWithoutFeedback onPress={() => setShowGenderPicker(false)}>
           <View style={styles.modalOverlay}>
             <TouchableWithoutFeedback>
               <View style={styles.pickerModalContent}>
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={styles.genderOption}
                   onPress={() => handleGenderSelect('male')}
                 >
                   <Text style={styles.genderOptionText}>Nam</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={styles.genderOption}
                   onPress={() => handleGenderSelect('female')}
                 >
                   <Text style={styles.genderOptionText}>Nữ</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={styles.genderOption}
                   onPress={() => handleGenderSelect('other')}
                 >
@@ -184,7 +199,7 @@ export default function ProfileSetupScreen({ navigation }) {
         </TouchableWithoutFeedback>
       </Modal>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -231,7 +246,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  
+
   pickerWrapper: {
     flex: 1,
     // height: 52,
@@ -379,4 +394,4 @@ const styles = StyleSheet.create({
     color: '#333',
     textAlign: 'center',
   },
-});
+})

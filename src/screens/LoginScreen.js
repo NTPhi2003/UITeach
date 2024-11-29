@@ -16,6 +16,9 @@ import BackButton from '../components/BackButton'
 import CustomInput from '../components/CustomInput'
 import { tempUser } from '../data/User'
 import { AuthContext } from '../context/authContext'
+import axios from 'axios'
+import { BASE_URL, LOGIN_API_URL } from '../constant/api'
+import { X_API_KEY } from '../constant/key'
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('')
@@ -25,12 +28,29 @@ export default function LoginScreen({ navigation }) {
   const [passwordFocused, setPasswordFocused] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
-  const handleLogin = () => {
-    if (username === '123' && password === '123') {
-      setUser(tempUser)
-    } else {
-      Alert.alert('Tên đăng nhập hoặc mật khẩu không đúng')
-    }
+  const handleLogin = async () => {
+    console.log('Login processing')
+    axios
+      .post(
+        LOGIN_API_URL,
+        {
+          username: username.trim(),
+          password: password.trim(),
+        },
+        {
+          headers: {
+            'x-api-key': X_API_KEY,
+          },
+        },
+      )
+      .then(function (response) {
+        console.log(response.data)
+        setUser(response.data.metadata)
+      })
+      .catch(function (error) {
+        console.log(error.message)
+        Alert.alert('Tên đăng nhập hoặc mật khẩu không đúng')
+      })
   }
 
   return (

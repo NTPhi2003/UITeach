@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/Feather'
 import { AuthContext } from '../context/authContext'
 
 export default function AccountScreen() {
-  const { setUser } = useContext(AuthContext)
+  const { user, setUser } = useContext(AuthContext)
   const navigation = useNavigation()
 
   const settingsData = [
@@ -73,12 +73,14 @@ export default function AccountScreen() {
         {/* Profile Section */}
         <View style={styles.profileSection}>
           <View style={styles.avatarContainer}>
-            <Image source={tempUser.avatar} style={styles.avatar} />
+            <Image source={{ uri: user.avatar }} style={styles.avatar} />
             <TouchableOpacity style={styles.editButton}>
               <Icon name='edit-2' size={16} color='#fff' />
             </TouchableOpacity>
           </View>
-          <Text style={styles.userName}>{tempUser.name}</Text>
+          <Text style={styles.userName}>
+            {user?.name && user?.name.length > 0 ? user?.name : user.username}
+          </Text>
         </View>
 
         {/* Settings List */}
@@ -167,4 +169,3 @@ const styles = StyleSheet.create({
   },
   settingsList: {},
 })
-
