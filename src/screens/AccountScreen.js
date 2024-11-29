@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -16,6 +16,14 @@ import { AuthContext } from '../context/authContext'
 
 export default function AccountScreen() {
   const { user, setUser } = useContext(AuthContext)
+  const [user2, setUser2] = useState(user)
+
+  useEffect(() => {
+    if (user) {
+      setUser2(user)
+    }
+  }, [user])
+
   const navigation = useNavigation()
 
   const settingsData = [
@@ -73,13 +81,15 @@ export default function AccountScreen() {
         {/* Profile Section */}
         <View style={styles.profileSection}>
           <View style={styles.avatarContainer}>
-            <Image source={{ uri: user.avatar }} style={styles.avatar} />
+            <Image source={{ uri: user2.avatar }} style={styles.avatar} />
             <TouchableOpacity style={styles.editButton}>
               <Icon name='edit-2' size={16} color='#fff' />
             </TouchableOpacity>
           </View>
           <Text style={styles.userName}>
-            {user?.name && user?.name.length > 0 ? user?.name : user.username}
+            {user2?.name && user2?.name.length > 0
+              ? user2?.name
+              : user2.username}
           </Text>
         </View>
 
