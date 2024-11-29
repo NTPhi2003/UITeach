@@ -1,101 +1,146 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, StatusBar, Dimensions, FlatList, SafeAreaView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { tempUser } from '../data/User';
-import { tempSubjects } from '../data/Subjects';
-import { tempExams } from '../data/Exams';
-import { Blogs } from '../data/Blogs';
-import Icon from 'react-native-vector-icons/Feather'; 
-import Icon2 from 'react-native-vector-icons/MaterialIcons';
-import Icon3 from 'react-native-vector-icons/Ionicons';
-import CourseCard from '../components/CourseCard';
-import BlogCard from '../components/BlogCard';
-import { useNavigation } from '@react-navigation/native';
+import React, { useContext, useEffect, useState } from 'react'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  StatusBar,
+  Dimensions,
+  FlatList,
+  SafeAreaView,
+} from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
+import { tempUser } from '../data/User'
+import { tempSubjects } from '../data/Subjects'
+import { tempExams } from '../data/Exams'
+import { Blogs } from '../data/Blogs'
+import Icon from 'react-native-vector-icons/Feather'
+import Icon2 from 'react-native-vector-icons/MaterialIcons'
+import Icon3 from 'react-native-vector-icons/Ionicons'
+import CourseCard from '../components/CourseCard'
+import BlogCard from '../components/BlogCard'
+import { useNavigation } from '@react-navigation/native'
+import { AuthContext } from '../context/authContext'
+import { authInstance } from '../axiosInstance/authInstance'
+import { ALL_PUBLISHED_LESSON_API_URL } from '../constant/api'
 
 export default function HomeScreen() {
-  const [currentSubjectIndex, setCurrentSubjectIndex] = useState(0);
-  const [currentExamIndex, setCurrentExamIndex] = useState(0);
+  const [currentSubjectIndex, setCurrentSubjectIndex] = useState(0)
+  const [currentExamIndex, setCurrentExamIndex] = useState(0)
+  const { user, setUser } = useContext(AuthContext)
+  const [name, setName] = useState(user?.name.split(' ').pop())
+  useEffect(() => {
+    if (user) {
+      setName(user.name.split(' ').pop())
+    }
+  }, [user])
 
-  const navigation = useNavigation();
+  useEffect(() => {
+    ;(async function () {
+      await authInstance
+        .get(`${ALL_PUBLISHED_LESSON_API_URL}LTCB-THĐH-77`)
+        .then((res) => {
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err.status)
+          if (err.status == 401) {
+            setUser(null)
+          }
+        })
+    })()
+  }, [])
 
-  const limitedSubjects = tempSubjects.slice(0, 3);
-  const limitedExams = tempExams.slice(0, 3);
+  const navigation = useNavigation()
+
+  const limitedSubjects = tempSubjects.slice(0, 3)
+  const limitedExams = tempExams.slice(0, 3)
 
   const handleSubjectScroll = (event) => {
-    const scrollPosition = event.nativeEvent.contentOffset.x;
-    const index = Math.round(scrollPosition / (Dimensions.get('window').width - 32));
-    setCurrentSubjectIndex(index);
-  };
+    const scrollPosition = event.nativeEvent.contentOffset.x
+    const index = Math.round(
+      scrollPosition / (Dimensions.get('window').width - 32),
+    )
+    setCurrentSubjectIndex(index)
+  }
 
   const handleExamScroll = (event) => {
-    const scrollPosition = event.nativeEvent.contentOffset.x;
-    const index = Math.round(scrollPosition / (Dimensions.get('window').width - 32));
-    setCurrentExamIndex(index);
-  };
+    const scrollPosition = event.nativeEvent.contentOffset.x
+    const index = Math.round(
+      scrollPosition / (Dimensions.get('window').width - 32),
+    )
+    setCurrentExamIndex(index)
+  }
 
   const renderSubject = ({ item }) => (
     <CourseCard
       title={item.title}
-      description={item.description || ""}
+      description={item.description || ''}
       duration={item.duration}
       image={item.image}
     />
-  );
+  )
 
   const renderExam = ({ item }) => (
     <CourseCard
       title={item.title}
-      description={item.description || ""}
+      description={item.description || ''}
       duration={item.duration}
       image={item.image}
-      onPress={() => navigation.navigate('Exam', {
-        screen: 'ExamDetail',
-        params: { examData: item }
-      })}
+      onPress={() =>
+        navigation.navigate('Exam', {
+          screen: 'ExamDetail',
+          params: { examData: item },
+        })
+      }
     />
-  );
+  )
 
   return (
     <ScrollView style={styles.container}>
-      <StatusBar backgroundColor="transparent" translucent barStyle="dark-content" />
+      <StatusBar
+        backgroundColor='transparent'
+        translucent
+        barStyle='dark-content'
+      />
       <View style={styles.greetingContainer}>
         <LinearGradient
           colors={['#0066ff', 'rgba(0, 102, 255, 0.7)', 'transparent']}
           start={{ x: 0, y: 1 }} // Điểm bắt đầu (bottom)
-          end={{ x: 0, y: 0 }}   // Điểm kết thúc (top)
+          end={{ x: 0, y: 0 }} // Điểm kết thúc (top)
           style={styles.gradient}
         >
-        <View style={styles.header}>
-          <View style={styles.greeting}>
-            <Text style={styles.greetingText}>
-              Hi, {tempUser.name.split(' ').pop()}
-          </Text>
-          <Text style={styles.subText}>Let's start learning!</Text>
-        </View>
-        
-        <TouchableOpacity style={styles.notificationButton}>
-          <View>
-            <Icon2 name="notifications" size={24} color="#fff" />
-            <View style={styles.badge}>
-              {/* <Text style={styles.badgeText}>1</Text> */}
+          <View style={styles.header}>
+            <View style={styles.greeting}>
+              <Text style={styles.greetingText}>Hi, {name}</Text>
+              <Text style={styles.subText}>Let's start learning!</Text>
             </View>
-          </View>
-        </TouchableOpacity>
-        </View>
 
-        <View style={styles.searchContainer}>
-        <View style={styles.searchBox}>
-          <Icon name="search" size={20} color="#1a75ff" />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search"
-            placeholderTextColor="#666"
-          />
-        </View>
-        <TouchableOpacity style={styles.filterButton}>
-          <Icon name="sliders" size={20} color="#1a75ff" />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity style={styles.notificationButton}>
+              <View>
+                <Icon2 name='notifications' size={24} color='#fff' />
+                <View style={styles.badge}>
+                  {/* <Text style={styles.badgeText}>1</Text> */}
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.searchContainer}>
+            <View style={styles.searchBox}>
+              <Icon name='search' size={20} color='#1a75ff' />
+              <TextInput
+                style={styles.searchInput}
+                placeholder='Search'
+                placeholderTextColor='#666'
+              />
+            </View>
+            <TouchableOpacity style={styles.filterButton}>
+              <Icon name='sliders' size={20} color='#1a75ff' />
+            </TouchableOpacity>
+          </View>
         </LinearGradient>
       </View>
 
@@ -103,12 +148,12 @@ export default function HomeScreen() {
       <View style={styles.subjectsContainer}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Môn học</Text>
-          <TouchableOpacity 
-            style={styles.seeMoreButton} 
+          <TouchableOpacity
+            style={styles.seeMoreButton}
             onPress={() => navigation.navigate('Courses')}
           >
             <Text style={styles.seeMoreText}>Xem thêm</Text>
-            <Icon3 name="chevron-forward" size={16} color="#007AFF" />
+            <Icon3 name='chevron-forward' size={16} color='#007AFF' />
           </TouchableOpacity>
         </View>
         <View style={styles.carouselContainer}>
@@ -118,17 +163,19 @@ export default function HomeScreen() {
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={(item) => item.id.toString()}
             onScroll={handleSubjectScroll}
           />
-          
+
           <View style={styles.dotContainer}>
             {limitedSubjects.map((_, index) => (
               <View
                 key={index}
                 style={[
                   styles.dot,
-                  currentSubjectIndex === index ? styles.dotActive : styles.dotInactive
+                  currentSubjectIndex === index
+                    ? styles.dotActive
+                    : styles.dotInactive,
                 ]}
               />
             ))}
@@ -136,17 +183,16 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      
       {/* Exam */}
       <View style={styles.examContainer}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Đề thi</Text>
-          <TouchableOpacity 
-            style={styles.seeMoreButton} 
+          <TouchableOpacity
+            style={styles.seeMoreButton}
             onPress={() => navigation.navigate('Exam')}
           >
             <Text style={styles.seeMoreText}>Xem thêm</Text>
-            <Icon3 name="chevron-forward" size={16} color="#007AFF" />
+            <Icon3 name='chevron-forward' size={16} color='#007AFF' />
           </TouchableOpacity>
         </View>
         <View style={styles.carouselContainer}>
@@ -156,17 +202,19 @@ export default function HomeScreen() {
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={(item) => item.id.toString()}
             onScroll={handleExamScroll}
           />
-          
+
           <View style={styles.dotContainer}>
             {limitedExams.map((_, index) => (
               <View
                 key={index}
                 style={[
                   styles.dot,
-                  currentExamIndex === index ? styles.dotActive : styles.dotInactive
+                  currentExamIndex === index
+                    ? styles.dotActive
+                    : styles.dotInactive,
                 ]}
               />
             ))}
@@ -178,16 +226,16 @@ export default function HomeScreen() {
       <View style={styles.blogContainer}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Blog chia sẻ</Text>
-          <TouchableOpacity 
-            style={styles.seeMoreButton} 
+          <TouchableOpacity
+            style={styles.seeMoreButton}
             onPress={() => navigation.navigate('Exam')}
           >
             <Text style={styles.seeMoreText}>Xem thêm</Text>
-            <Icon3 name="chevron-forward" size={16} color="#007AFF" />
+            <Icon3 name='chevron-forward' size={16} color='#007AFF' />
           </TouchableOpacity>
         </View>
         <View style={styles.blogContainer}>
-          {Blogs.map(blog => (
+          {Blogs.map((blog) => (
             <BlogCard
               key={blog.id}
               title={blog.title}
@@ -199,7 +247,7 @@ export default function HomeScreen() {
         </View>
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -257,7 +305,6 @@ const styles = StyleSheet.create({
     height: 10,
     justifyContent: 'center',
     alignItems: 'center',
-
   },
   // badgeText: {
   //   color: '#fff',
@@ -314,7 +361,7 @@ const styles = StyleSheet.create({
   seeMoreButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4, 
+    gap: 4,
   },
   seeMoreText: {
     fontSize: 16,
@@ -346,4 +393,4 @@ const styles = StyleSheet.create({
   blogContainer: {
     paddingVertical: 20,
   },
-});
+})

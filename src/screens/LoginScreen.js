@@ -16,6 +16,18 @@ import BackButton from '../components/BackButton'
 import CustomInput from '../components/CustomInput'
 import { tempUser } from '../data/User'
 import { AuthContext } from '../context/authContext'
+import axios from 'axios'
+import { BASE_URL, LOGIN_API_URL } from '../constant/api'
+import { X_API_KEY } from '../constant/key'
+import { notAuthInstance } from '../axiosInstance/notAuthInstance'
+import { bottomToastPromise } from '../utils/toastUtil'
+import {
+  ACCESS_TOKEN,
+  REFRESH_TOKEN,
+  USER_ID,
+  USER_INFO,
+} from '../constant/nameOfKey'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState('')
@@ -25,12 +37,43 @@ export default function LoginScreen({ navigation }) {
   const [passwordFocused, setPasswordFocused] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
-  const handleLogin = () => {
-    if (username === '123' && password === '123') {
-      setUser(tempUser)
-    } else {
-      Alert.alert('Tên đăng nhập hoặc mật khẩu không đúng')
-    }
+  const handleLogin = async () => {
+    const loginPromise = notAuthInstance
+      .post(LOGIN_API_URL, {
+        username: username.trim(),
+        password: password.trim(),
+      })
+      .then(async function (response) {
+        console.log(response.data)
+        setUser(response.data.metadata)
+        try {
+          await AsyncStorage.setItem(
+            USER_INFO,
+            JSON.stringify(response.data.metadata),
+          )
+          console.log(response.data.metadata._id)
+          await AsyncStorage.setItem(USER_ID, response.data.metadata._id)
+          await AsyncStorage.setItem(
+            ACCESS_TOKEN,
+            response.data.metadata.accessToken,
+          )
+          await AsyncStorage.setItem(
+            REFRESH_TOKEN,
+            response.data.metadata.refreshToken,
+          )
+        } catch (err) {
+          throw err
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        throw err
+      })
+    bottomToastPromise(loginPromise, {
+      loading: 'Đang xử lý...',
+      success: 'Đăng nhập thành công.',
+      error: 'Tài khoản hoặc mật khẩu không đúng.',
+    })
   }
 
   return (

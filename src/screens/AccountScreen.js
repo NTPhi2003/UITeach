@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -13,9 +13,24 @@ import { tempUser } from '../data/User'
 import { useNavigation } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/Feather'
 import { AuthContext } from '../context/authContext'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import {
+  ACCESS_TOKEN,
+  REFRESH_TOKEN,
+  USER_ID,
+  USER_INFO,
+} from '../constant/nameOfKey'
 
 export default function AccountScreen() {
-  const { setUser } = useContext(AuthContext)
+  const { user, setUser } = useContext(AuthContext)
+  const [user2, setUser2] = useState(user)
+
+  useEffect(() => {
+    if (user) {
+      setUser2(user)
+    }
+  }, [user])
+
   const navigation = useNavigation()
 
   const settingsData = [
@@ -54,7 +69,18 @@ export default function AccountScreen() {
         },
         {
           text: 'Đồng ý',
-          onPress: () => setUser(null),
+          onPress: async () => {
+            setUser(null)
+            try {
+              await AsyncStorage.removeItem(USER_INFO)
+              await AsyncStorage.removeItem(ACCESS_TOKEN)
+              await AsyncStorage.removeItem(REFRESH_TOKEN)
+              await AsyncStorage.removeItem(USER_ID)
+            } catch (e) {
+              // saving error
+              console.log(e)
+            }
+          },
         },
       ])
     } else {
@@ -73,12 +99,16 @@ export default function AccountScreen() {
         {/* Profile Section */}
         <View style={styles.profileSection}>
           <View style={styles.avatarContainer}>
-            <Image source={tempUser.avatar} style={styles.avatar} />
+            <Image source={{ uri: user2.avatar }} style={styles.avatar} />
             <TouchableOpacity style={styles.editButton}>
               <Icon name='edit-2' size={16} color='#fff' />
             </TouchableOpacity>
           </View>
-          <Text style={styles.userName}>{tempUser.name}</Text>
+          <Text style={styles.userName}>
+            {user2?.name && user2?.name.length > 0
+              ? user2?.name
+              : user2.username}
+          </Text>
         </View>
 
         {/* Settings List */}
@@ -167,4 +197,3 @@ const styles = StyleSheet.create({
   },
   settingsList: {},
 })
-
