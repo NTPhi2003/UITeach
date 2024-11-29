@@ -18,6 +18,8 @@ import { AuthContext } from '../context/authContext'
 import axios from 'axios'
 import { SIGNUP_API_URL } from '../constant/api'
 import { notAuthInstance } from '../axiosInstance/notAuthInstance'
+import { bottomToastPromise } from '../utils/toastUtil'
+import { toast, ToastPosition } from '@backpackapp-io/react-native-toast'
 
 export default function ProfileSetupScreen({ navigation, route }) {
   const { username, email: preEmail, password } = route.params
@@ -36,7 +38,10 @@ export default function ProfileSetupScreen({ navigation, route }) {
   const [showGenderPicker, setShowGenderPicker] = useState(false)
 
   const handleComplete = async () => {
-    notAuthInstance
+    const toastId = toast.loading('Đang xử lý...', {
+      position: ToastPosition.BOTTOM,
+    })
+    const signUpPromise = notAuthInstance
       .post(SIGNUP_API_URL, {
         username,
         password,
@@ -48,10 +53,16 @@ export default function ProfileSetupScreen({ navigation, route }) {
         gender: gender === 'male' ? 'Nam' : gender === 'female' ? 'Nữ' : 'Khác',
       })
       .then((res) => {
-        setShowSuccessModal(true)
+        setTimeout(() => {
+          setShowSuccessModal(true)
+        }, 200)
       })
       .catch((err) => {
         console.log(err)
+        throw err
+      })
+      .finally(() => {
+        toast.dismiss(toastId)
       })
   }
 

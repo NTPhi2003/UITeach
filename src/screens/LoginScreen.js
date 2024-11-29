@@ -20,7 +20,6 @@ import axios from 'axios'
 import { BASE_URL, LOGIN_API_URL } from '../constant/api'
 import { X_API_KEY } from '../constant/key'
 import { notAuthInstance } from '../axiosInstance/notAuthInstance'
-import { toast, ToastPosition } from '@backpackapp-io/react-native-toast'
 import { bottomToastPromise } from '../utils/toastUtil'
 
 export default function LoginScreen({ navigation }) {
