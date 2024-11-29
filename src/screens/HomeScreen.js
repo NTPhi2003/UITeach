@@ -23,17 +23,35 @@ import CourseCard from '../components/CourseCard'
 import BlogCard from '../components/BlogCard'
 import { useNavigation } from '@react-navigation/native'
 import { AuthContext } from '../context/authContext'
+import { authInstance } from '../axiosInstance/authInstance'
+import { ALL_PUBLISHED_LESSON_API_URL } from '../constant/api'
 
 export default function HomeScreen() {
   const [currentSubjectIndex, setCurrentSubjectIndex] = useState(0)
   const [currentExamIndex, setCurrentExamIndex] = useState(0)
-  const { user } = useContext(AuthContext)
+  const { user, setUser } = useContext(AuthContext)
   const [name, setName] = useState(user?.name.split(' ').pop())
   useEffect(() => {
     if (user) {
       setName(user.name.split(' ').pop())
     }
   }, [user])
+
+  useEffect(() => {
+    ;(async function () {
+      await authInstance
+        .get(`${ALL_PUBLISHED_LESSON_API_URL}LTCB-THĐH-77`)
+        .then((res) => {
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err.status)
+          if (err.status == 401) {
+            setUser(null)
+          }
+        })
+    })()
+  }, [])
 
   const navigation = useNavigation()
 

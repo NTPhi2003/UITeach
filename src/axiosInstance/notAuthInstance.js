@@ -6,5 +6,4 @@ const notAuthInstance = axios.create({
     'x-api-key': X_API_KEY,
   },
 })
-
 export { notAuthInstance }

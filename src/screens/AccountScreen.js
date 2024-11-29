@@ -14,7 +14,12 @@ import { useNavigation } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/Feather'
 import { AuthContext } from '../context/authContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { USER_INFO } from '../constant/nameOfKey'
+import {
+  ACCESS_TOKEN,
+  REFRESH_TOKEN,
+  USER_ID,
+  USER_INFO,
+} from '../constant/nameOfKey'
 
 export default function AccountScreen() {
   const { user, setUser } = useContext(AuthContext)
@@ -68,6 +73,9 @@ export default function AccountScreen() {
             setUser(null)
             try {
               await AsyncStorage.removeItem(USER_INFO)
+              await AsyncStorage.removeItem(ACCESS_TOKEN)
+              await AsyncStorage.removeItem(REFRESH_TOKEN)
+              await AsyncStorage.removeItem(USER_ID)
             } catch (e) {
               // saving error
               console.log(e)

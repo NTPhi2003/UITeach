@@ -21,7 +21,12 @@ import { BASE_URL, LOGIN_API_URL } from '../constant/api'
 import { X_API_KEY } from '../constant/key'
 import { notAuthInstance } from '../axiosInstance/notAuthInstance'
 import { bottomToastPromise } from '../utils/toastUtil'
-import { USER_INFO } from '../constant/nameOfKey'
+import {
+  ACCESS_TOKEN,
+  REFRESH_TOKEN,
+  USER_ID,
+  USER_INFO,
+} from '../constant/nameOfKey'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function LoginScreen({ navigation }) {
@@ -33,21 +38,32 @@ export default function LoginScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false)
 
   const handleLogin = async () => {
-    console.log('Login processing')
     const loginPromise = notAuthInstance
       .post(LOGIN_API_URL, {
         username: username.trim(),
         password: password.trim(),
       })
-      .then(function (response) {
+      .then(async function (response) {
         console.log(response.data)
         setUser(response.data.metadata)
-        AsyncStorage.setItem(
-          USER_INFO,
-          JSON.stringify(response.data.metadata),
-        ).catch((err) => {
-          console.log(err)
-        })
+        try {
+          await AsyncStorage.setItem(
+            USER_INFO,
+            JSON.stringify(response.data.metadata),
+          )
+          console.log(response.data.metadata._id)
+          await AsyncStorage.setItem(USER_ID, response.data.metadata._id)
+          await AsyncStorage.setItem(
+            ACCESS_TOKEN,
+            response.data.metadata.accessToken,
+          )
+          await AsyncStorage.setItem(
+            REFRESH_TOKEN,
+            response.data.metadata.refreshToken,
+          )
+        } catch (err) {
+          throw err
+        }
       })
       .catch((err) => {
         console.log(err)
