@@ -1,67 +1,35 @@
-// import React from 'react';
-// import { View, Text, StyleSheet } from 'react-native';
-
-// export default function ProgressScreen() {
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.title}>Progress Screen</Text>
-//     </View>
-//   );
-// }
-// {/* <CourseCardProgress
-//   title="Tên khóa học"
-//   duration="45 phút"
-//   lessons={10}
-//   progress={25}
-//   image={require('../../assets/course-image.png')}
-//   onPress={() => {}}
-// /> */}
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   title: {
-//     fontSize: 20,
-//     color: '#333',
-//   }
-// });
-
-
-
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, StatusBar, Image, Platform, TouchableOpacity, Modal, Animated } from 'react-native';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CourseCard from '../components/CourseCardSmall';
+import CourseCardProgress from '../components/CourseCardProgress';
 import { tempSubjects } from '../data/Subjects';
 
 export default function ProgressScreen () {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  const [courseId, setCourseId] = useState(1);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownAnimation = new Animated.Value(0);
+  // const [courseId, setCourseId] = useState(1);
+  // const [modalVisible, setModalVisible] = useState(false);
+  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // const dropdownAnimation = new Animated.Value(0);
 
-  const categories = [
-    { id: 1, name: 'Các môn lập trình' },
-    { id: 2, name: 'Các môn toán' }
-  ];
+  // const categories = [
+  //   { id: 1, name: 'Các môn lập trình' },
+  //   { id: 2, name: 'Các môn toán' }
+  // ];
 
-  // Lọc subjects theo courseId
-  const filteredSubjects = tempSubjects.filter(subject => subject.courseId === courseId);
+  // // Lọc subjects theo courseId
+  // const filteredSubjects = tempSubjects.filter(subject => subject.courseId === courseId);
 
-  // Animation cho dropdown
-  useEffect(() => {
-    Animated.timing(dropdownAnimation, {
-      toValue: isDropdownOpen ? 1 : 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  }, [isDropdownOpen]);
+  // // Animation cho dropdown
+  // useEffect(() => {
+  //   Animated.timing(dropdownAnimation, {
+  //     toValue: isDropdownOpen ? 1 : 0,
+  //     duration: 200,
+  //     useNativeDriver: true,
+  //   }).start();
+  // }, [isDropdownOpen]);
 
   // Quản lý StatusBar style
   useEffect(() => {
@@ -92,7 +60,7 @@ export default function ProgressScreen () {
             size={24} 
             color="#fff" 
             style={styles.backButton}
-            onPress={() => navigation.goBack()} 
+            onPress={() => navigation.navigate('Home')} 
           />
           <View style={styles.headerTitleContainer}>
             <Image 
@@ -100,24 +68,25 @@ export default function ProgressScreen () {
               style={styles.headerIcon} 
               resizeMode="contain"
             />
-            <TouchableOpacity 
+            {/* <TouchableOpacity 
               style={styles.categorySelector}
               onPress={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
+            > */}
               <Text style={styles.headerTitle}>
-                {categories.find(cat => cat.id === courseId)?.name}
+                {/* {categories.find(cat => cat.id === courseId)?.name} */}
+                Tiến trình học tập
               </Text>
-              <Animated.View style={{
+              {/* <Animated.View style={{
                 transform: [{
                   rotate: dropdownAnimation.interpolate({
                     inputRange: [0, 1],
                     outputRange: ['0deg', '180deg']
                   })
                 }]
-              }}>
-                <Icon name="chevron-down" size={20} color="#fff" />
-              </Animated.View>
-            </TouchableOpacity>
+              }}> */}
+                {/* <Icon name="chevron-down" size={20} color="#fff" /> */}
+              {/* </Animated.View>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>
@@ -127,21 +96,21 @@ export default function ProgressScreen () {
           style={styles.scrollView}
           showsVerticalScrollIndicator={false}
         >
-          {filteredSubjects.map((course) => (
-            <CourseCard
+          {tempSubjects.map((course) => (
+            <CourseCardProgress
               key={course.id}
               title={course.title}
-              author={course.author}
+              duration={course.duration}
+              lessons={10}
+              progress={25}
               image={course.image}
-              onPress={() => {
-                navigation.navigate('CourseDetail', { courseId: course.id });
-              }}
+              onPress={() => navigation.navigate("Study", { subjectData: course })}
             />
           ))}
         </ScrollView>
       </View>
 
-      {isDropdownOpen && (
+      {/* {isDropdownOpen && (
         <Animated.View 
           style={[
             styles.dropdownMenu,
@@ -185,7 +154,7 @@ export default function ProgressScreen () {
             </TouchableOpacity>
           ))}
         </Animated.View>
-      )}
+      )} */}
     </SafeAreaView>
   );
 }

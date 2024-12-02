@@ -54,17 +54,17 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   title: {
-    fontSize: 17,
+    fontSize: 16.5,
     fontWeight: 'bold',
     color: '#305F72',
     maxWidth: 190
   },
   infoContainer: {
     flexDirection: 'row',
-    marginTop: 4,
+    marginTop: 6,
   },
   info: {
-    fontSize: 14.5,
+    fontSize: 14,
     color: '#FF6B00',
     fontWeight: 'bold',
   },

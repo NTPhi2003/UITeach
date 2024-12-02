@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    color: 'black',
+    color: 'grey',
   },
   selectedText: {
     color: 'white', // Màu chữ trắng khi được chọn
