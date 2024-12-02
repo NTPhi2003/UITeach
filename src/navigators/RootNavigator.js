@@ -14,9 +14,8 @@ export function RootNavigator() {
       {user ? (
         <Stack.Screen name='MainApp' component={TabNavigator} />
       ) : (
-        <Stack.Screen name='Auth' component={TabNavigator} />
+        <Stack.Screen name='Auth' component={AuthNavigator} />
       )}
     </Stack.Navigator>
   )
 }
-
