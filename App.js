@@ -10,6 +10,9 @@ import { toast, Toasts } from '@backpackapp-io/react-native-toast'
 import { View, StyleSheet, Text } from 'react-native'
 import { USER_INFO } from './src/constant/nameOfKey'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const client = new QueryClient()
 
 function App() {
   const [user, setUser] = useState(null)
@@ -32,12 +35,14 @@ function App() {
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView style={styles.container}>
-        <AuthContext.Provider value={{ user, setUser }}>
-          <NavigationContainer>
-            <RootNavigator />
-          </NavigationContainer>
-          <Toasts globalAnimationType='spring' />
-        </AuthContext.Provider>
+        <QueryClientProvider client={client}>
+          <AuthContext.Provider value={{ user, setUser }}>
+            <NavigationContainer>
+              <RootNavigator />
+            </NavigationContainer>
+            <Toasts globalAnimationType='spring' />
+          </AuthContext.Provider>
+        </QueryClientProvider>
       </GestureHandlerRootView>
     </SafeAreaProvider>
   )

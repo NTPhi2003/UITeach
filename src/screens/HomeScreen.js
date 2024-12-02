@@ -10,6 +10,7 @@ import {
   Dimensions,
   FlatList,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { tempUser } from '../data/User'
@@ -24,7 +25,11 @@ import BlogCard from '../components/BlogCard'
 import { useNavigation } from '@react-navigation/native'
 import { AuthContext } from '../context/authContext'
 import { authInstance } from '../axiosInstance/authInstance'
-import { ALL_PUBLISHED_LESSON_API_URL } from '../constant/api'
+import {
+  ALL_PUBLISHED_LESSON_API_URL,
+  ALL_PUBLISHED_SUBJECT_API_URL,
+} from '../constant/api'
+import { useQuery } from '@tanstack/react-query'
 
 export default function HomeScreen() {
   const [currentSubjectIndex, setCurrentSubjectIndex] = useState(0)
@@ -37,21 +42,23 @@ export default function HomeScreen() {
     }
   }, [user])
 
-  useEffect(() => {
-    ;(async function () {
-      await authInstance
-        .get(`${ALL_PUBLISHED_LESSON_API_URL}LTCB-THĐH-77`)
+  const subjectQuery = useQuery({
+    queryKey: ['all-subjects'],
+    queryFn: async () => {
+      return await authInstance
+        .get(`${ALL_PUBLISHED_SUBJECT_API_URL}`)
         .then((res) => {
-          console.log(res.data)
+          return res?.data?.metadata
         })
         .catch((err) => {
-          console.log(err.status)
           if (err.status == 401) {
             setUser(null)
           }
+          throw err
         })
-    })()
-  }, [])
+    },
+    enabled: !!user,
+  })
 
   const navigation = useNavigation()
 
@@ -143,47 +150,51 @@ export default function HomeScreen() {
           </View>
         </LinearGradient>
       </View>
-
       {/* Subjects */}
-      <View style={styles.subjectsContainer}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Môn học</Text>
-          <TouchableOpacity
-            style={styles.seeMoreButton}
-            onPress={() => navigation.navigate('Courses')}
-          >
-            <Text style={styles.seeMoreText}>Xem thêm</Text>
-            <Icon3 name='chevron-forward' size={16} color='#007AFF' />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.carouselContainer}>
-          <FlatList
-            data={limitedSubjects}
-            renderItem={renderSubject}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.id.toString()}
-            onScroll={handleSubjectScroll}
-          />
-
-          <View style={styles.dotContainer}>
-            {limitedSubjects.map((_, index) => (
-              <View
-                key={index}
-                style={[
-                  styles.dot,
-                  currentSubjectIndex === index
-                    ? styles.dotActive
-                    : styles.dotInactive,
-                ]}
-              />
-            ))}
+      {!subjectQuery.isError ? (
+        <View style={styles.subjectsContainer}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Môn học</Text>
+            <TouchableOpacity
+              style={styles.seeMoreButton}
+              onPress={() => navigation.navigate('Courses')}
+            >
+              <Text style={styles.seeMoreText}>Xem thêm</Text>
+              <Icon3 name='chevron-forward' size={16} color='#007AFF' />
+            </TouchableOpacity>
           </View>
-        </View>
-      </View>
+          {subjectQuery.isPending ? (
+            <ActivityIndicator />
+          ) : (
+            <View style={styles.carouselContainer}>
+              <FlatList
+                data={subjectQuery.data}
+                renderItem={renderSubject}
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={(item) => item._id.toString()}
+                onScroll={handleSubjectScroll}
+              />
 
-      {/* Exam */}
+              <View style={styles.dotContainer}>
+                {subjectQuery.data.map((_, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.dot,
+                      currentSubjectIndex === index
+                        ? styles.dotActive
+                        : styles.dotInactive,
+                    ]}
+                  />
+                ))}
+              </View>
+            </View>
+          )}
+        </View>
+      ) : null}
+      ){/* Exam */}
       <View style={styles.examContainer}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Đề thi</Text>
@@ -221,7 +232,6 @@ export default function HomeScreen() {
           </View>
         </View>
       </View>
-
       {/* Blogs */}
       <View style={styles.blogContainer}>
         <View style={styles.sectionHeader}>
