@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/native'
+import { checkUrlFormat } from '../utils/regex'
 
 // Lấy chiều rộng màn hình
 const screenWidth = Dimensions.get('window').width
@@ -17,20 +18,12 @@ const horizontalPadding = 32 // 16 * 2 cho left và right padding
 const cardWidth = screenWidth - horizontalPadding
 const CourseCard = ({ title, description, duration, image, onPress }) => {
   const navigation = useNavigation()
-  var pattern = new RegExp(
-    '^(https?:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$',
-    'i',
-  )
+
   return (
     <View style={styles.card}>
       <View style={styles.imageContainer}>
         <Image
-          source={pattern.test(image) ? { uri: image } : image}
+          source={checkUrlFormat(image) ? { uri: image } : image}
           style={styles.image}
           resizeMode='cover'
         />
@@ -129,4 +122,3 @@ const styles = StyleSheet.create({
 })
 
 export default CourseCard
-

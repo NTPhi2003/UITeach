@@ -1,25 +1,87 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, StatusBar, Image, Platform, TouchableOpacity, Modal, Animated } from 'react-native';
-import { useNavigation, useIsFocused } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import CourseCard from '../components/CourseCardSmall';
-import { tempSubjects } from '../data/Subjects';
+import React, { useEffect, useState } from 'react'
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Image,
+  Platform,
+  TouchableOpacity,
+  Modal,
+  Animated,
+  ActivityIndicator,
+} from 'react-native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import CourseCard from '../components/CourseCardSmall'
+import { tempSubjects } from '../data/Subjects'
+import { useQuery } from '@tanstack/react-query'
+import { authInstance } from '../axiosInstance/authInstance'
+import {
+  ALL_PUBLISHED_COURSE_API_URL,
+  ALL_PUBLISHED_SUBJECT_API_URL,
+} from '../constant/api'
 
 export default function CourseScreen() {
-  const navigation = useNavigation();
-  const isFocused = useIsFocused();
-  const [courseId, setCourseId] = useState(1);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownAnimation = new Animated.Value(0);
+  const navigation = useNavigation()
+  const isFocused = useIsFocused()
+  const [courseId, setCourseId] = useState(null)
+  const [modalVisible, setModalVisible] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownAnimation = new Animated.Value(0)
 
   const categories = [
     { id: 1, name: 'Các môn lập trình' },
-    { id: 2, name: 'Các môn toán' }
-  ];
+    { id: 2, name: 'Các môn toán' },
+  ]
+
+  const categoriesQuery = useQuery({
+    queryKey: ['all-published courses'],
+    queryFn: async () => {
+      return await authInstance
+        .get(`${ALL_PUBLISHED_COURSE_API_URL}`)
+        .then((res) => {
+          const data = res?.data?.metadata
+          setCourseId(data[0].courseId)
+          for (let i = 0; i < data.length; i++) {
+            data[i].name = `Các môn ${data[i].name.toLowerCase()}`
+          }
+
+          return data
+        })
+        .catch((err) => {
+          if (err.status == 401) {
+            setUser(null)
+          }
+          throw err
+        })
+    },
+  })
+
+  const subjectsQuery = useQuery({
+    queryKey: ['subjects', courseId],
+    queryFn: async () => {
+      return await authInstance
+        .get(`${ALL_PUBLISHED_SUBJECT_API_URL}${courseId}`)
+        .then((res) => {
+          return res?.data?.metadata
+        })
+        .catch((err) => {
+          if (err.status == 401) {
+            setUser(null)
+          }
+          throw err
+        })
+    },
+    enabled: categoriesQuery.isSuccess && !!courseId,
+  })
 
   // Lọc subjects theo courseId
-  const filteredSubjects = tempSubjects.filter(subject => subject.courseId === courseId);
+  const filteredSubjects = tempSubjects.filter(
+    (subject) => subject.courseId === courseId,
+  )
 
   // Animation cho dropdown
   useEffect(() => {
@@ -27,13 +89,13 @@ export default function CourseScreen() {
       toValue: isDropdownOpen ? 1 : 0,
       duration: 200,
       useNativeDriver: true,
-    }).start();
-  }, [isDropdownOpen]);
+    }).start()
+  }, [isDropdownOpen])
 
   // Quản lý StatusBar style
   useEffect(() => {
     if (isFocused) {
-      StatusBar.setBarStyle('light-content');
+      StatusBar.setBarStyle('light-content')
       // if (Platform.OS === 'android') {
       //   StatusBar.setBackgroundColor('#2F6BFF');
       //   StatusBar.setTranslucent(true);
@@ -42,47 +104,65 @@ export default function CourseScreen() {
 
     return () => {
       // Cleanup khi unmount hoặc không focus
-      StatusBar.setBarStyle('dark-content');
+      StatusBar.setBarStyle('dark-content')
       // if (Platform.OS === 'android') {
       //   StatusBar.setBackgroundColor('#FFFFFF');
       //   StatusBar.setTranslucent(false);
       // }
-    };
-  }, [isFocused]);
+    }
+  }, [isFocused])
+  if (categoriesQuery.isPending || subjectsQuery.isPending)
+    return (
+      <SafeAreaView
+        style={[
+          styles.container,
+          { justifyContent: 'center', alignItems: 'center' },
+        ]}
+      >
+        <ActivityIndicator color='white' size='large' />
+      </SafeAreaView>
+    )
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerTop}>
-          <Icon 
-            name="arrow-back" 
-            size={24} 
-            color="#fff" 
+          <Icon
+            name='arrow-back'
+            size={24}
+            color='#fff'
             style={styles.backButton}
-            onPress={() => navigation.navigate('Home')} 
+            onPress={() => navigation.navigate('Home')}
           />
           <View style={styles.headerTitleContainer}>
-            <Image 
-              source={require('../../assets/animalBox.png')} 
-              style={styles.headerIcon} 
-              resizeMode="contain"
+            <Image
+              source={require('../../assets/animalBox.png')}
+              style={styles.headerIcon}
+              resizeMode='contain'
             />
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.categorySelector}
               onPress={() => setIsDropdownOpen(!isDropdownOpen)}
             >
               <Text style={styles.headerTitle}>
-                {categories.find(cat => cat.id === courseId)?.name}
+                {
+                  categoriesQuery.data.find((cat) => cat.courseId === courseId)
+                    ?.name
+                }
               </Text>
-              <Animated.View style={{
-                transform: [{
-                  rotate: dropdownAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ['0deg', '180deg']
-                  })
-                }]
-              }}>
-                <Icon name="chevron-down" size={20} color="#fff" />
+              <Animated.View
+                style={{
+                  transform: [
+                    {
+                      rotate: dropdownAnimation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: ['0deg', '180deg'],
+                      }),
+                    },
+                  ],
+                }}
+              >
+                <Icon name='chevron-down' size={20} color='#fff' />
               </Animated.View>
             </TouchableOpacity>
           </View>
@@ -90,60 +170,71 @@ export default function CourseScreen() {
       </View>
 
       <View style={styles.contentContainer}>
-        <ScrollView 
+        <ScrollView
           style={styles.scrollView}
           showsVerticalScrollIndicator={false}
         >
-          {filteredSubjects.map((course) => (
+          {subjectsQuery.data.map((course) => (
             <CourseCard
-              key={course.id}
+              key={course.subjectId}
               title={course.title}
-              author={course.author}
+              author={course.teachBy}
               image={course.image}
-              onPress={() => navigation.navigate("Study", { subjectData: course })}
+              onPress={() =>
+                navigation.navigate('Study', { subjectData: course })
+              }
             />
           ))}
         </ScrollView>
       </View>
 
       {isDropdownOpen && (
-        <Animated.View 
+        <Animated.View
           style={[
             styles.dropdownMenu,
             {
               opacity: dropdownAnimation,
-              transform: [{
-                translateY: dropdownAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [-20, 0]
-                })
-              }]
-            }
+              transform: [
+                {
+                  translateY: dropdownAnimation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [-20, 0],
+                  }),
+                },
+              ],
+            },
           ]}
         >
-          {categories.map((category) => (
+          {categoriesQuery.data.map((category) => (
             <TouchableOpacity
-              key={category.id}
+              key={category.courseId}
               style={[
                 styles.dropdownItem,
-                courseId === category.id && styles.selectedDropdownItem
+                courseId === category.courseId && styles.selectedDropdownItem,
               ]}
               onPress={() => {
-                setCourseId(category.id);
-                setIsDropdownOpen(false);
+                setCourseId(category.courseId)
+                setIsDropdownOpen(false)
               }}
             >
               <View style={styles.dropdownItemContent}>
-                <Icon 
-                  name={courseId === category.id ? "radio-button-on" : "radio-button-off"} 
-                  size={22} 
-                  color="#2F6BFF" 
+                <Icon
+                  name={
+                    courseId === category.courseId
+                      ? 'radio-button-on'
+                      : 'radio-button-off'
+                  }
+                  size={22}
+                  color='#2F6BFF'
                   style={styles.dropdownIcon}
                 />
-                <Text style={[
-                  styles.dropdownText,
-                  courseId === category.id && styles.selectedDropdownText
-                ]}>
+                <Text
+                  style={[
+                    styles.dropdownText,
+                    courseId === category.courseId &&
+                      styles.selectedDropdownText,
+                  ]}
+                >
                   {category.name}
                 </Text>
               </View>
@@ -152,7 +243,7 @@ export default function CourseScreen() {
         </Animated.View>
       )}
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -297,4 +388,4 @@ const styles = StyleSheet.create({
     color: '#2F6BFF',
     fontWeight: '500',
   },
-});
+})

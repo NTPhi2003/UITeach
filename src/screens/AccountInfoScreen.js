@@ -13,7 +13,7 @@ export default function AccountScreen() {
     {
       id: 1,
       icon: 'calendar',
-      title: user?.dateOfBirth ?? tempUser.dateOfBirth,
+      title: user?.dateOfBirth ? user?.dataOfBirth : tempUser.dateOfBirth,
     },
     {
       id: 2,
@@ -145,4 +145,3 @@ const styles = StyleSheet.create({
   },
   settingsList: {},
 })
-

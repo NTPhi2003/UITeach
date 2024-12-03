@@ -1,41 +1,35 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react'
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const BlogCard = ({ title, description, image, rating = 5 }) => {
   const renderStars = () => {
     return [...Array(5)].map((_, index) => (
-      <Icon 
+      <Icon
         key={index}
-        name="star"
+        name='star'
         size={12}
         color={index < rating ? '#FFD700' : '#D3D3D3'}
         style={styles.star}
       />
-    ));
-  };
+    ))
+  }
 
   return (
     <TouchableOpacity style={styles.card}>
-      <Image 
-        source={image}
-        style={styles.image}
-        resizeMode="cover"
-      />
+      <Image source={image} style={styles.image} resizeMode='cover' />
       <View style={styles.content}>
         <Text style={styles.title} numberOfLines={2}>
           {title}
         </Text>
-        <View style={styles.ratingContainer}>
-          {renderStars()}
-        </View>
+        <View style={styles.ratingContainer}>{renderStars()}</View>
         <Text style={styles.description} numberOfLines={2}>
           {description}
         </Text>
       </View>
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   card: {
@@ -82,6 +76,6 @@ const styles = StyleSheet.create({
     color: '#666',
     lineHeight: 16,
   },
-});
+})
 
-export default BlogCard;
+export default BlogCard

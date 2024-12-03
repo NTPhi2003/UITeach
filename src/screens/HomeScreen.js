@@ -130,17 +130,15 @@ export default function HomeScreen() {
               <Text style={styles.greetingText}>Hi, {name}</Text>
               <Text style={styles.subText}>Let's start learning!</Text>
             </View>
-
             <TouchableOpacity style={styles.notificationButton}>
               <View>
                 <Icon2 name='notifications' size={24} color='#fff' />
                 <View style={styles.badge}>
-                  {/* <Text style={styles.badgeText}>1</Text> */}
+                  <Text style={styles.badgeText}>1</Text>
                 </View>
               </View>
             </TouchableOpacity>
           </View>
-
           <View style={styles.searchContainer}>
             <View style={styles.searchBox}>
               <Icon name='search' size={20} color='#1a75ff' />
@@ -182,7 +180,6 @@ export default function HomeScreen() {
                 keyExtractor={(item) => item._id.toString()}
                 onScroll={handleSubjectScroll}
               />
-
               <View style={styles.dotContainer}>
                 {subjectQuery.data.map((_, index) => (
                   <View
@@ -200,7 +197,7 @@ export default function HomeScreen() {
           )}
         </View>
       ) : null}
-      ){/* Exam */}
+      {/* Exam */}
       <View style={styles.examContainer}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Đề thi</Text>
