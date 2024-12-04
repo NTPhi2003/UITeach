@@ -45,13 +45,11 @@ export default function LoginScreen({ navigation }) {
       })
       .then(async function (response) {
         console.log(response.data)
-        setUser(response.data.metadata)
         try {
           await AsyncStorage.setItem(
             USER_INFO,
             JSON.stringify(response.data.metadata),
           )
-          console.log(response.data.metadata._id)
           await AsyncStorage.setItem(USER_ID, response.data.metadata._id)
           await AsyncStorage.setItem(
             ACCESS_TOKEN,
@@ -61,6 +59,7 @@ export default function LoginScreen({ navigation }) {
             REFRESH_TOKEN,
             response.data.metadata.refreshToken,
           )
+          setUser(response.data.metadata)
         } catch (err) {
           throw err
         }

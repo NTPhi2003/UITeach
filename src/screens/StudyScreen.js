@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useContext } from 'react'
 import {
   View,
   Text,
@@ -19,26 +19,33 @@ import {
 import BackButton from '../components/BackButton'
 import YoutubePlayer from 'react-native-youtube-iframe'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { useQuery } from '@tanstack/react-query'
-import { ALL_PUBLISHED_LESSON_API_URL } from '../constant/api'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  ALL_PUBLISHED_LESSON_API_URL,
+  COMPLETE_LESSON_PROCESS_API_URL,
+  COMPLETE_SUBJECT_PROCESS_API_URL,
+  GET_PROCESS_API_URL,
+} from '../constant/api'
 import { authInstance } from '../axiosInstance/authInstance'
+import { AuthContext } from '../context/authContext'
 
 export default function StudyScreen({ route }) {
   const { subjectData } = route.params
+  const subjectId = subjectData.subjectId
   const [currentVideoId, setCurrentVideoId] = useState()
   const insets = useSafeAreaInsets()
   const [showCompletionModal, setShowCompletionModal] = useState(false)
   const [isLastLesson, setIsLastLesson] = useState(false)
+  const { user, setUser } = useContext(AuthContext)
+  const userEmail = user?.email
 
   const lessonsQuery = useQuery({
-    queryKey: ['lessons', subjectData.subjectId],
+    queryKey: ['lessons', subjectId],
     queryFn: async () => {
       return await authInstance
-        .get(`${ALL_PUBLISHED_LESSON_API_URL}${subjectData.subjectId}`)
+        .get(`${ALL_PUBLISHED_LESSON_API_URL}${subjectId}`)
         .then((res) => {
           const lessonData = res?.data?.metadata
-          if (lessonData[0]?.data[0]?.videoId)
-            setCurrentVideoId(lessonData[0]?.data[0]?.videoId)
           return lessonData
         })
         .catch((err) => {
@@ -48,6 +55,36 @@ export default function StudyScreen({ route }) {
           throw err
         })
     },
+    enabled: !!subjectId,
+  })
+
+  const progressQuery = useQuery({
+    queryKey: ['process', userEmail, subjectId],
+    queryFn: async () => {
+      return await authInstance
+        .post(GET_PROCESS_API_URL, { userEmail, subjectId })
+        .then((res) => {
+          const processData = res?.data?.metadata
+          let tempCurrentVideoId =
+            processData.data[processData.data.length - 1].videoId
+
+          for (let i = 0; i < processData.data.length; i++) {
+            if (!processData.data[i].status) {
+              tempCurrentVideoId = processData.data[i].videoId
+              break
+            }
+          }
+          setCurrentVideoId(tempCurrentVideoId)
+          return processData
+        })
+        .catch((err) => {
+          if (err.status == 401) {
+            setUser(null)
+          }
+          throw err
+        })
+    },
+    enabled: !!userEmail && !!subjectId,
   })
 
   const handleLessonPress = (videoId) => {
@@ -63,6 +100,7 @@ export default function StudyScreen({ route }) {
   const handleVideoStateChange = useCallback(
     (state) => {
       if (state === 'ended') {
+        console.log(currentVideoId)
         setIsLastLesson(checkIfLastLesson(currentVideoId))
         setShowCompletionModal(true)
       }
@@ -130,8 +168,38 @@ export default function StudyScreen({ route }) {
       </TouchableOpacity>
     )
   }
+  const queryClient = useQueryClient()
 
-  if (lessonsQuery.isPending || lessonsQuery.isError)
+  const completeSubject = () => {
+    authInstance.post(COMPLETE_SUBJECT_PROCESS_API_URL, {
+      userEmail,
+      subjectId,
+    })
+
+    removeCacheData()
+  }
+
+  const completeLessson = (videoId) => {
+    authInstance.post(COMPLETE_LESSON_PROCESS_API_URL, {
+      userEmail,
+      subjectId,
+      videoId,
+    })
+    removeCacheData()
+  }
+
+  const removeCacheData = () => {
+    queryClient.removeQueries({
+      queryKey: ['process subject learning'],
+      exact: true,
+    })
+    queryClient.removeQueries({
+      queryKey: ['process', user.email],
+      exact: true,
+    })
+  }
+
+  if (lessonsQuery.isPending || progressQuery.isPending || lessonsQuery.isError)
     return (
       <SafeAreaView
         style={[
@@ -140,6 +208,17 @@ export default function StudyScreen({ route }) {
         ]}
       >
         <ActivityIndicator color='blue' size='large' />
+      </SafeAreaView>
+    )
+  if (lessonsQuery.data.length == 0)
+    return (
+      <SafeAreaView
+        style={[
+          styles.container,
+          { display: 'flex', justifyContent: 'center', alignItems: 'center' },
+        ]}
+      >
+        <Text>Khóa học này chưa có bài học nào</Text>
       </SafeAreaView>
     )
 
@@ -245,7 +324,10 @@ export default function StudyScreen({ route }) {
                   {isLastLesson ? (
                     <TouchableOpacity
                       style={[styles.modalButton, styles.stayButton]}
-                      onPress={() => setShowCompletionModal(false)}
+                      onPress={() => {
+                        setShowCompletionModal(false)
+                        completeSubject()
+                      }}
                     >
                       <Text style={styles.stayButtonText}>Đóng</Text>
                     </TouchableOpacity>
@@ -259,7 +341,10 @@ export default function StudyScreen({ route }) {
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={[styles.modalButton, styles.nextButton]}
-                        onPress={handleNextLesson}
+                        onPress={() => {
+                          handleNextLesson()
+                          completeLessson(currentVideoId)
+                        }}
                       >
                         <Text style={styles.nextButtonText}>Bài tiếp theo</Text>
                       </TouchableOpacity>

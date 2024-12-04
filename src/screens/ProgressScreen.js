@@ -1,162 +1,160 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, StatusBar, Image, Platform, TouchableOpacity, Modal, Animated } from 'react-native';
-import { useNavigation, useIsFocused } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import CourseCard from '../components/CourseCardSmall';
-import CourseCardProgress from '../components/CourseCardProgress';
-import { tempSubjects } from '../data/Subjects';
+import React, { useContext, useEffect, useState } from 'react'
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Image,
+  Platform,
+  TouchableOpacity,
+  Modal,
+  Animated,
+  ActivityIndicator,
+} from 'react-native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import CourseCard from '../components/CourseCardSmall'
+import CourseCardProgress from '../components/CourseCardProgress'
+import { tempSubjects } from '../data/Subjects'
+import { useQuery } from '@tanstack/react-query'
+import { AuthContext } from '../context/authContext'
+import { authInstance } from '../axiosInstance/authInstance'
+import {
+  ALL_PUBLISHED_SUBJECT_API_URL,
+  GET_ALL_PROCESS_API_URL,
+  GET_PROCESS_API_URL,
+} from '../constant/api'
 
-export default function ProgressScreen () {
-  const navigation = useNavigation();
-  const isFocused = useIsFocused();
-  // const [courseId, setCourseId] = useState(1);
-  // const [modalVisible, setModalVisible] = useState(false);
-  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // const dropdownAnimation = new Animated.Value(0);
+export default function ProgressScreen() {
+  const navigation = useNavigation()
+  const isFocused = useIsFocused()
+  const { user, setUser } = useContext(AuthContext)
+  const userEmail = user?.email
 
-  // const categories = [
-  //   { id: 1, name: 'Các môn lập trình' },
-  //   { id: 2, name: 'Các môn toán' }
-  // ];
+  const processQuery = useQuery({
+    queryKey: ['process', userEmail],
+    queryFn: async () => {
+      return await authInstance
+        .post(GET_ALL_PROCESS_API_URL, { userEmail })
+        .then((res) => {
+          const processData = res?.data?.metadata
+          return processData
+        })
+        .catch((err) => {
+          if (err.status == 401) {
+            setUser(null)
+          }
+          throw err
+        })
+    },
+    enabled: !!user,
+  })
 
-  // // Lọc subjects theo courseId
-  // const filteredSubjects = tempSubjects.filter(subject => subject.courseId === courseId);
+  const processSubjectsQuery = useQuery({
+    queryKey: ['process subject learning'],
+    queryFn: async () => {
+      return await authInstance
+        .get(`${ALL_PUBLISHED_SUBJECT_API_URL}`)
+        .then((res) => {
+          const subjects = res?.data?.metadata
+          const subjectsWithProcess = []
+          for (let i = 0; i < processQuery.data.length; i++) {
+            const tempData = { ...processQuery.data[i] }
+            let lessons = tempData.data.length
+            let progress = 0
+            for (let j = 0; j < lessons; j++) {
+              if (tempData.data[j].status) progress++
+            }
+            tempData.progress = progress
+            tempData.lessons = lessons
+            delete tempData.data
+            subjectsWithProcess.push({
+              ...tempData,
+              ...subjects.find(
+                (subject) => subject.subjectId === tempData.subjectId,
+              ),
+            })
+          }
+          return subjectsWithProcess
+        })
+        .catch((err) => {
+          if (err.status == 401) {
+            setUser(null)
+          }
+          throw err
+        })
+    },
+    enabled: processQuery.isSuccess,
+  })
 
-  // // Animation cho dropdown
-  // useEffect(() => {
-  //   Animated.timing(dropdownAnimation, {
-  //     toValue: isDropdownOpen ? 1 : 0,
-  //     duration: 200,
-  //     useNativeDriver: true,
-  //   }).start();
-  // }, [isDropdownOpen]);
-
-  // Quản lý StatusBar style
   useEffect(() => {
     if (isFocused) {
-      StatusBar.setBarStyle('light-content');
-      // if (Platform.OS === 'android') {
-      //   StatusBar.setBackgroundColor('#2F6BFF');
-      //   StatusBar.setTranslucent(true);
-      // }
+      StatusBar.setBarStyle('light-content')
     }
 
     return () => {
-      // Cleanup khi unmount hoặc không focus
-      StatusBar.setBarStyle('dark-content');
-      // if (Platform.OS === 'android') {
-      //   StatusBar.setBackgroundColor('#FFFFFF');
-      //   StatusBar.setTranslucent(false);
-      // }
-    };
-  }, [isFocused]);
+      StatusBar.setBarStyle('dark-content')
+    }
+  }, [isFocused])
+
+  if (processQuery.isPending || processSubjectsQuery.isPending)
+    return (
+      <SafeAreaView
+        style={[
+          styles.container,
+          { justifyContent: 'center', alignItems: 'center' },
+        ]}
+      >
+        <ActivityIndicator color='white' size='large' />
+      </SafeAreaView>
+    )
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerTop}>
-          <Icon 
-            name="arrow-back" 
-            size={24} 
-            color="#fff" 
+          <Icon
+            name='arrow-back'
+            size={24}
+            color='#fff'
             style={styles.backButton}
-            onPress={() => navigation.navigate('Home')} 
+            onPress={() => navigation.navigate('Home')}
           />
           <View style={styles.headerTitleContainer}>
-            <Image 
-              source={require('../../assets/animalBox.png')} 
-              style={styles.headerIcon} 
-              resizeMode="contain"
+            <Image
+              source={require('../../assets/animalBox.png')}
+              style={styles.headerIcon}
+              resizeMode='contain'
             />
-            {/* <TouchableOpacity 
-              style={styles.categorySelector}
-              onPress={() => setIsDropdownOpen(!isDropdownOpen)}
-            > */}
-              <Text style={styles.headerTitle}>
-                {/* {categories.find(cat => cat.id === courseId)?.name} */}
-                Tiến trình học tập
-              </Text>
-              {/* <Animated.View style={{
-                transform: [{
-                  rotate: dropdownAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ['0deg', '180deg']
-                  })
-                }]
-              }}> */}
-                {/* <Icon name="chevron-down" size={20} color="#fff" /> */}
-              {/* </Animated.View>
-            </TouchableOpacity> */}
+            <Text style={styles.headerTitle}>Tiến trình học tập</Text>
           </View>
         </View>
       </View>
 
       <View style={styles.contentContainer}>
-        <ScrollView 
+        <ScrollView
           style={styles.scrollView}
           showsVerticalScrollIndicator={false}
         >
-          {tempSubjects.map((course) => (
+          {processSubjectsQuery.data.map((course, index) => (
             <CourseCardProgress
-              key={course.id}
+              key={index}
               title={course.title}
               duration={course.duration}
-              lessons={10}
-              progress={25}
+              lessons={course.lessons}
+              progress={course.progress}
               image={course.image}
-              onPress={() => navigation.navigate("Study", { subjectData: course })}
+              onPress={() =>
+                navigation.navigate('Study', { subjectData: course })
+              }
             />
           ))}
         </ScrollView>
       </View>
-
-      {/* {isDropdownOpen && (
-        <Animated.View 
-          style={[
-            styles.dropdownMenu,
-            {
-              opacity: dropdownAnimation,
-              transform: [{
-                translateY: dropdownAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [-20, 0]
-                })
-              }]
-            }
-          ]}
-        >
-          {categories.map((category) => (
-            <TouchableOpacity
-              key={category.id}
-              style={[
-                styles.dropdownItem,
-                courseId === category.id && styles.selectedDropdownItem
-              ]}
-              onPress={() => {
-                setCourseId(category.id);
-                setIsDropdownOpen(false);
-              }}
-            >
-              <View style={styles.dropdownItemContent}>
-                <Icon 
-                  name={courseId === category.id ? "radio-button-on" : "radio-button-off"} 
-                  size={22} 
-                  color="#2F6BFF" 
-                  style={styles.dropdownIcon}
-                />
-                <Text style={[
-                  styles.dropdownText,
-                  courseId === category.id && styles.selectedDropdownText
-                ]}>
-                  {category.name}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </Animated.View>
-      )} */}
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -301,5 +299,4 @@ const styles = StyleSheet.create({
     color: '#2F6BFF',
     fontWeight: '500',
   },
-});
-
+})

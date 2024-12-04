@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -17,12 +17,15 @@ import { useNavigation, useIsFocused } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import CourseCard from '../components/CourseCardSmall'
 import { tempSubjects } from '../data/Subjects'
-import { useQuery } from '@tanstack/react-query'
+import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query'
 import { authInstance } from '../axiosInstance/authInstance'
 import {
   ALL_PUBLISHED_COURSE_API_URL,
   ALL_PUBLISHED_SUBJECT_API_URL,
+  CREATE_PROCESS_API_URL,
 } from '../constant/api'
+import { AuthContext } from '../context/authContext'
+import { bottomToastPromise } from '../utils/toastUtil'
 
 export default function CourseScreen() {
   const navigation = useNavigation()
@@ -31,6 +34,8 @@ export default function CourseScreen() {
   const [modalVisible, setModalVisible] = useState(false)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownAnimation = new Animated.Value(0)
+  const { user, setUser } = useContext(AuthContext)
+  const queryClient = useQueryClient()
 
   const categories = [
     { id: 1, name: 'Các môn lập trình' },
@@ -77,6 +82,13 @@ export default function CourseScreen() {
     },
     enabled: categoriesQuery.isSuccess && !!courseId,
   })
+
+  const createProgress = (subjectId, userEmail) => {
+    return authInstance.post(CREATE_PROCESS_API_URL, {
+      subjectId,
+      userEmail,
+    })
+  }
 
   // Lọc subjects theo courseId
   const filteredSubjects = tempSubjects.filter(
@@ -180,9 +192,31 @@ export default function CourseScreen() {
               title={course.title}
               author={course.teachBy}
               image={course.image}
-              onPress={() =>
-                navigation.navigate('Study', { subjectData: course })
-              }
+              onPress={() => {
+                bottomToastPromise(
+                  createProgress(course.subjectId, user.email)
+                    .then((res) => {
+                      queryClient.removeQueries({
+                        queryKey: ['process subject learning'],
+                      })
+                      queryClient.removeQueries({
+                        queryKey: ['process', user.email],
+                      })
+                      return res
+                    })
+                    .catch((err) => {
+                      console.log(err)
+                    })
+                    .finally(() =>
+                      navigation.navigate('Study', { subjectData: course }),
+                    ),
+                  {
+                    loading: 'Vui lòng chờ',
+                    success: 'Tham gia khóa học thành công',
+                    error: '',
+                  },
+                )
+              }}
             />
           ))}
         </ScrollView>

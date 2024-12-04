@@ -28,13 +28,16 @@ import { authInstance } from '../axiosInstance/authInstance'
 import {
   ALL_PUBLISHED_LESSON_API_URL,
   ALL_PUBLISHED_SUBJECT_API_URL,
+  CREATE_PROCESS_API_URL,
 } from '../constant/api'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { bottomToastPromise } from '../utils/toastUtil'
 
 export default function HomeScreen() {
   const [currentSubjectIndex, setCurrentSubjectIndex] = useState(0)
   const [currentExamIndex, setCurrentExamIndex] = useState(0)
   const { user, setUser } = useContext(AuthContext)
+  console.log(user)
   const [name, setName] = useState(user?.name.split(' ').pop())
   useEffect(() => {
     if (user) {
@@ -42,6 +45,12 @@ export default function HomeScreen() {
     }
   }, [user])
 
+  const createProgress = (subjectId, userEmail) => {
+    return authInstance.post(CREATE_PROCESS_API_URL, {
+      subjectId,
+      userEmail,
+    })
+  }
   const subjectQuery = useQuery({
     queryKey: ['all-subjects'],
     queryFn: async () => {
@@ -61,6 +70,7 @@ export default function HomeScreen() {
   })
 
   const navigation = useNavigation()
+  const queryClient = useQueryClient()
 
   const limitedSubjects = tempSubjects.slice(0, 3)
   const limitedExams = tempExams.slice(0, 3)
@@ -88,10 +98,32 @@ export default function HomeScreen() {
       duration={item.duration}
       image={item.image}
       onPress={() =>
-        navigation.navigate('Courses', {
-          screen: 'Study',
-          params: { subjectData: item },
-        })
+        bottomToastPromise(
+          createProgress(item.subjectId, user.email)
+            .then((res) => {
+              queryClient.removeQueries({
+                queryKey: ['process subject learning'],
+              })
+              queryClient.removeQueries({
+                queryKey: ['process', user.email],
+              })
+              return res
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+            .finally(() =>
+              navigation.navigate('Courses', {
+                screen: 'Study',
+                params: { subjectData: item },
+              }),
+            ),
+          {
+            loading: 'Vui lòng chờ',
+            success: 'Tham gia khóa học thành công',
+            error: '',
+          },
+        )
       }
     />
   )
@@ -172,7 +204,7 @@ export default function HomeScreen() {
           ) : (
             <View style={styles.carouselContainer}>
               <FlatList
-                data={subjectQuery.data}
+                data={subjectQuery.data.slice(0, 5)}
                 renderItem={renderSubject}
                 horizontal
                 pagingEnabled
@@ -181,7 +213,7 @@ export default function HomeScreen() {
                 onScroll={handleSubjectScroll}
               />
               <View style={styles.dotContainer}>
-                {subjectQuery.data.map((_, index) => (
+                {subjectQuery.data.slice(0, 5).map((_, index) => (
                   <View
                     key={index}
                     style={[
