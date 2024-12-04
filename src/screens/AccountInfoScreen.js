@@ -13,7 +13,7 @@ export default function AccountScreen() {
     {
       id: 1,
       icon: 'calendar',
-      title: user?.dateOfBirth ? user?.dataOfBirth : tempUser.dateOfBirth,
+      title: user?.dateOfBirth ? user?.dateOfBirth : tempUser.dateOfBirth,
     },
     {
       id: 2,

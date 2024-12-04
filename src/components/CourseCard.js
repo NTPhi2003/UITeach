@@ -38,7 +38,7 @@ const CourseCard = ({ title, description, duration, image, onPress }) => {
         <View style={styles.footer}>
           <View style={styles.durationContainer}>
             <Icon name='time-outline' size={16} color='#666' />
-            <Text style={styles.duration}>{duration}</Text>
+            <Text style={styles.duration}>{duration} phút</Text>
           </View>
           <TouchableOpacity style={styles.button} onPress={onPress}>
             <Text style={styles.buttonText}>Học ngay</Text>
