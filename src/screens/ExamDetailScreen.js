@@ -1,16 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import BackButton from '../components/BackButton';
 
 export default function ExamDetailScreen({ route }) {
+    const navigation = useNavigation();
+
     // Lấy dữ liệu từ params
     const { examData } = route.params || {};
 
     return (
       <SafeAreaProvider>
           <SafeAreaView style={styles.container}>
-          <BackButton />
+          <BackButton onPress={() => navigation.navigate('ExamMain')}/>
           <Text style={styles.headerTitle}>{examData?.title || 'Thư viện đề thi'}</Text>
           <ScrollView style={styles.scrollView}>
             {

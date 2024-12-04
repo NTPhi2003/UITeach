@@ -3,13 +3,13 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-export default function BackButton({ color = '#007BFF' }) {
+export default function BackButton({ color = '#007BFF', onPress }) {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity 
       style={styles.backButton}
-      onPress={() => navigation.goBack()}
+      onPress={onPress || (() => navigation.goBack())}
     >
       <Ionicons 
         name="chevron-back" 
