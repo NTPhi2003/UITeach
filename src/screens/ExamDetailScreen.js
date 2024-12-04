@@ -10,7 +10,7 @@ export default function ExamDetailScreen({ route }) {
     return (
       <SafeAreaProvider>
           <SafeAreaView style={styles.container}>
-          <BackButton />
+          <BackButton onPress={() => navigation.navigate('ExamMain')}/>
           <Text style={styles.headerTitle}>{examData?.title || 'Thư viện đề thi'}</Text>
           <ScrollView style={styles.scrollView}>
             {
