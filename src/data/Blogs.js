@@ -23,4 +23,3 @@ export const Blogs = [
     rating: 4,
   },
 ]
-
